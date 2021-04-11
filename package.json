@@ -4,7 +4,7 @@
     "description": "Range based Single File MBTiles like Store",
     "main": "tilebase.js",
     "scripts": {
-        "doc": "documentation build tilebelt.js -f html -o docs",
+        "doc": "documentation build tilebase.js -f html -o docs",
         "test": "tape test/**.test.js"
     },
     "repository": {
@@ -25,7 +25,8 @@
         "url": "https://github.com/openaddresses/TileBase/issues"
     },
     "homepage": "https://github.com/openaddresses/TileBase#readme",
-    "dependencies": {
-        "documentation": "^13.2.1"
+    "devDependencies": {
+        "documentation": "^13.2.1",
+        "tape": "^5.2.2"
     }
 }
