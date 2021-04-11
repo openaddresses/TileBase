@@ -27,8 +27,18 @@ Since there is currently only one version of the spec, all Tilebelt files will s
 74 62 01
 ```
 
-Following the Magic Bytes is a single 32 bit unsigned integer containing the number of following bytes
+Following the Magic Bytes is a single 32 bit unsigned Bi Endian Integer containing the number of following bytes
 that make up the JSON file config.
+
+```
+74
+63      tb Magic Bytes
+01      1
+00
+00
+04
+D3      1234 bytes
+```
 
 ### File Config
 
