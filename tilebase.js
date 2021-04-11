@@ -3,30 +3,29 @@ const fs = require('fs');
 /**
  * @class Tilebase
  *
- * @prop {Path} loc Location of Input TileBase
  * @prop {Object} config Read Config Options
  * @prop {Number} config_length Length of Config in Bytes
- * @prop {FileHandle} handle FileHandle to loc
+ * @prop {FileHandle|MemHandle} handle TileBase read options
  */
 class TileBase {
     /**
      * @constructor
      */
     constructor(loc) {
-        this.loc = loc;
         this.config_length = 0;
 
         this.handle = fs.openSync(loc);
         this.config = {};
 
-        this.read_config();
+        this.config_range();
+        this.config_read();
     }
 
     /**
      * Read the config portion of a TileBase file
      *   Note: usually called by the constructor
      */
-    read_config() {
+    config_range() {
         const buff = new Buffer.alloc(7);
         fs.readSync(this.handle, buff);
 
@@ -37,8 +36,9 @@ class TileBase {
         }
 
         this.config_length = buff.readUInt32BE(3);
-        console.error(this.config_length)
+    }
 
+    config_read() {
         let config = new Buffer.alloc(this.config_length);
         fs.readSync(this.handle, config), 7;
         try {
@@ -82,4 +82,6 @@ class TileBase {
     }
 }
 
-module.exports = TileBase;
+module.exports = {
+    TileBase
+};
