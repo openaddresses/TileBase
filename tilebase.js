@@ -19,11 +19,14 @@ class TileBase {
 
         this.config_range();
         this.config_read();
+        this.config_verify(this.config);
     }
 
     /**
      * Read the config portion of a TileBase file
      *   Note: usually called by the constructor
+     *
+     * @returns {Number} Bytes of Config Data
      */
     config_range() {
         const buff = new Buffer.alloc(7);
@@ -36,6 +39,8 @@ class TileBase {
         }
 
         this.config_length = buff.readUInt32BE(3);
+
+        return this.config_length;
     }
 
     config_read() {
@@ -45,6 +50,23 @@ class TileBase {
             this.config = JSON.parse(config.toString());
         } catch (err) {
             throw new Error('JSON Config could not be parsed');
+        }
+    }
+
+    config_verify(config) {
+        if (!config.min) throw new Error('Config.min value must be present');
+        config.min = parseInt(config.min);
+        if (isNaN(config.min)) throw new Error('Config.min must be an integer');
+
+        if (!config.max) throw new Error('Config.max value must be present');
+        config.max = parseInt(config.max);
+        if (isNaN(config.min)) throw new Error('Config.max must be an integer');
+
+        if (!config.ranges) throw new Error('Config.ranges value must be present');
+        if (typeof config.ranges !== 'object') throw new Error('Config.ranges must be an object');
+
+        for (let z = config.min; z <= config.max; z++) {
+            const range = config.ranges[z];
         }
     }
 
