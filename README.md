@@ -42,9 +42,21 @@ D3      1234 bytes
 
 ### File Config
 
-The file config is a v
+```JSON
+{
+    "min": <min zoom>,
+    "max": <max zoom>,
+    "ranges": {
+        "<zoom>": [<min x>, <min y>, <max x>, <max y>]
+    }
+}
+```
 
 ### Tile Config
+
+```
+LE-UInt64 Memory Address
+```
 
 ### Tile Data
 
