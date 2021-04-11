@@ -1,0 +1,27 @@
+{
+  "name": "tilebase",
+  "version": "1.0.0",
+  "description": "Range based Single File MBTiles like Store",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/**.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openaddresses/TileBase.git"
+  },
+  "keywords": [
+    "mbtiles",
+    "openaddresses",
+    "mapbox",
+    "mvt",
+    "vector",
+    "tiles"
+  ],
+  "author": "Nick Ingalls",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/openaddresses/TileBase/issues"
+  },
+  "homepage": "https://github.com/openaddresses/TileBase#readme"
+}
