@@ -1,2 +1,41 @@
-# TileBase
-Range based Single File MBTiles like Store
+<h1 align=center>TileBase</h1>
+<p align=center>Range Based Single File MBTiles-like Tile Store</p>
+
+## Format Spec (v1)
+
+A TileBase file is designed as a single file tile store. It is functionally similiar to a MBTiles file,
+except it is optimized for Cloud Storage based serving and does not allow dynamic updates.
+
+TileBase files allow Ranged requests from Cloud Storage providers, avoiding the generally expensive
+operation of pushing individual tiles to the store.
+
+__TileBase File__
+```
+<Magic Bytes><Fixed Length Tile Config>
+
+<Variable Length Tile Config>
+<Variable Length Tile Data>
+```
+
+### File Header
+
+Every TileBelt file will begin with `74 62` (`tb` in ASCII)  followed by an 8-bit unsigned integer
+representing the TileBelt spec version number.
+
+Since there is currently only one version of the spec, all Tilebelt files will start with the following:
+```
+74 62 01
+```
+
+Following the Magic Bytes is a single 32 bit unsigned integer containing the number of following bytes
+that make up the JSON file config.
+
+### File Config
+
+The file config is a v
+
+### Tile Config
+
+### Tile Data
+
+
