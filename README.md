@@ -55,7 +55,8 @@ D3      1234 bytes
 ### Tile Addresses
 
 ```
-LE-UInt64 Memory Address
+LE-UInt64 Byte Address
+LE-UInt64 Vector Tile Size
 ```
 
 ### Tile Data

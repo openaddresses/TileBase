@@ -106,11 +106,11 @@ export default class TileBase {
                 ranges: {}
             };
 
-            new MBTiles(input + '?mode=ro', (err, mbtiles) => {
+            new MBTiles(input + '?mode=ro', async (err, mbtiles) => {
                 if (err) return reject(err);
 
-                mbtiles.getInfo((err, info) => {
-                    if (err) return reject(err);
+                try {
+                    const info = await getInfo(mbtiles);
 
                     if (isNaN(Number(info.minzoom))) return reject(new Error('Missing metadata.minzoom'));
                     if (isNaN(Number(info.maxzoom))) return reject(new Error('Missing metadata.maxzoom'));
@@ -119,19 +119,70 @@ export default class TileBase {
                     config.min = info.minzoom;
                     config.max = info.maxzoom;
 
+                    // Create Config File & Write to DB
                     for (let z = config.min; z <= config.max; z++) {
                         const min = tc.tiles(point([info.bounds[0], info.bounds[1]]).geometry, { min_zoom: z, max_zoom: z })[0];
                         const max = tc.tiles(point([info.bounds[2], info.bounds[3]]).geometry, { min_zoom: z, max_zoom: z })[0];
 
                         config.ranges[z] = [min[0], min[1], max[0], max[1]];
                     }
-
                     TileBase.write_config(output, config);
 
-                    return resolve(new TileBase(output));
-                });
+                    const tb = fs.createWriteStream(output, { flags:'a' });
+                    const tbt = fs.createWriteStream(output + '.tiles');
+
+                    let current_byte = BigInt(0);
+
+                    // Request each of the tiles within a range for a specific zoom
+                    for (let z = config.min; z <= config.max; z++) {
+                        for (let x = config.ranges[z][0]; x <= config.ranges[z][2]; x++) {
+                            for (let y = config.ranges[z][1]; y <= config.ranges[z][3]; y++) {
+                                const tile = await getTile(mbtiles, z, x, y);
+                                const tile_ln = BigInt(tile.length);
+
+                                let tileloc = Buffer.alloc(16);
+                                tileloc.writeBigUInt64LE(current_byte, 0)
+                                tileloc.writeBigUInt64LE(tile_ln, 8)
+
+                                tb.write(tileloc);
+                                tbt.write(tile);
+
+                                current_byte += tile_ln;
+                            }
+                        }
+                    }
+
+                    tbt.close();
+                    fs.createReadStream(output + '.tiles').pipe(tb);
+
+                    tb.on('close', () => {
+                        fs.unlinkSync(output + '.tiles');
+                        return resolve(new TileBase(output));
+                    });
+                } catch (err) {
+                    return reject(err);
+                }
             });
         });
+
+        function getInfo(mbtiles) {
+            return new Promise((resolve, reject) => {
+                mbtiles.getInfo((err, info) => {
+                    if (err) return reject(err);
+                    return resolve(info);
+                });
+            });
+        }
+
+        function getTile(mbtiles, z, x, y) {
+            return new Promise((resolve, reject) => {
+                mbtiles.getTile(z, x, y, (err, info) => {
+                    if (err && err.message === 'Tile does not exist') return resolve(Buffer.alloc(0));
+                    if (err) return reject(err);
+                    return resolve(info);
+                });
+            });
+        }
     }
 
     static write_config(output, config) {
