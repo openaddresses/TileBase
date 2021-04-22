@@ -39,9 +39,9 @@
               
                 
                 <li><a
-                  href='#config'
+                  href='#config_range'
                   class="">
-                  config
+                  config_range
                   
                 </a>
                 
@@ -119,8 +119,22 @@
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>loc</span> <code class='quiet'>(Path)</code>
-          : Location of Input TileBase
+          <span class='code bold'>config</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+          : Read Config Options
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>config_length</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+          : Length of Config in Bytes
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>handle</span> <code class='quiet'>((FileHandle | MemHandle))</code>
+          : TileBase read options
 
           
         </div>
@@ -153,8 +167,8 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='config'>
-      config
+    <h3 class='fl m0' id='config_range'>
+      config_range
     </h3>
     
     
@@ -164,7 +178,7 @@
   <p>Read the config portion of a TileBase file
 Note: usually called by the constructor</p>
 
-    <div class='pre p1 fill-light mt0'>config()</div>
+    <div class='pre p1 fill-light mt0'>config_range(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></div>
   
   
 
@@ -179,6 +193,14 @@ Note: usually called by the constructor</p>
 
   
 
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></code>:
+        Bytes of Config Data
+
+      
+    
   
 
   
@@ -368,7 +390,7 @@ Note: usually called by the constructor</p>
 
   <p>Convert an MBtiles file to TileBase</p>
 
-    <div class='pre p1 fill-light mt0'>to_tb(output: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): any</div>
+    <div class='pre p1 fill-light mt0'>to_tb(input: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, output: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): any</div>
   
   
 
@@ -382,6 +404,15 @@ Note: usually called by the constructor</p>
   
     <div class='py1 quiet mt1 prose-big'>Parameters</div>
     <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>input</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    Location to input MBTiles
+
+          </div>
+          
+        </div>
       
         <div class='space-bottom0'>
           <div>

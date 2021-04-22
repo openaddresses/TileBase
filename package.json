@@ -2,7 +2,7 @@
     "name": "tilebase",
     "version": "1.0.0",
     "description": "Range based Single File MBTiles like Store",
-    "main": "tilebase.js",
+    "main": "tilebase.mjs",
     "scripts": {
         "doc": "documentation build tilebase.js -f html -o docs",
         "test": "tape test/**.test.js"
@@ -26,7 +26,13 @@
     },
     "homepage": "https://github.com/openaddresses/TileBase#readme",
     "devDependencies": {
-        "documentation": "^13.2.1",
+        "documentation": "^13.2.4",
         "tape": "^5.2.2"
+    },
+    "dependencies": {
+        "@mapbox/mbtiles": "^0.12.1",
+        "@mapbox/tile-cover": "^3.0.2",
+        "@turf/helpers": "^6.3.0",
+        "ajv": "^8.1.0"
     }
 }

@@ -1,4 +1,16 @@
-const fs = require('fs');
+import fs from 'fs';
+import path from 'path';
+import Ajv from 'ajv';
+import { promisify } from 'util';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import MBTiles from '@mapbox/mbtiles';
+import tc from '@mapbox/tile-cover';
+import { point } from '@turf/helpers';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const schema = JSON.parse(fs.readFileSync(path.resolve(__dirname, './lib/schema.json')));
 
 /**
  * @class Tilebase
@@ -7,7 +19,7 @@ const fs = require('fs');
  * @prop {Number} config_length Length of Config in Bytes
  * @prop {FileHandle|MemHandle} handle TileBase read options
  */
-class TileBase {
+export default class TileBase {
     /**
      * @constructor
      */
@@ -54,16 +66,9 @@ class TileBase {
     }
 
     config_verify(config) {
-        if (!config.min) throw new Error('Config.min value must be present');
-        config.min = parseInt(config.min);
-        if (isNaN(config.min)) throw new Error('Config.min must be an integer');
-
-        if (!config.max) throw new Error('Config.max value must be present');
-        config.max = parseInt(config.max);
-        if (isNaN(config.min)) throw new Error('Config.max must be an integer');
-
-        if (!config.ranges) throw new Error('Config.ranges value must be present');
-        if (typeof config.ranges !== 'object') throw new Error('Config.ranges must be an object');
+        const ajv = new Ajv();
+        const valid = ajv.validate(schema, config);
+        if (!valid) throw new Error(ajv.errors);
 
         for (let z = config.min; z <= config.max; z++) {
             const range = config.ranges[z];
@@ -86,12 +91,43 @@ class TileBase {
     /**
      * Convert an MBtiles file to TileBase
      *
+     * @param {String} input Location to input MBTiles
      * @param {String} output Location to output TileBase
      *
      * @returns TileBase
      */
-    static to_tb(output) {
+    static to_tb(input, output) {
+        return new Promise((resolve, reject) => {
+            const config = {
+                minzoom: false,
+                maxzoom: false,
+                ranges: {}
+            };
 
+            new MBTiles(input + '?mode=ro', (err, mbtiles) => {
+                if (err) return reject(err);
+
+                mbtiles.getInfo((err, info) => {
+                    if (err) return reject(err);
+
+                    if (isNaN(Number(info.minzoom))) return reject(new Error('Missing metadata.minzoom'));
+                    if (isNaN(Number(info.maxzoom))) return reject(new Error('Missing metadata.maxzoom'));
+                    if (!info.bounds) return reject(new Error('Missing metadata.bounds'));
+
+                    config.minzoom = info.minzoom;
+                    config.maxzoom = info.maxzoom;
+
+                    for (let z = config.minzoom; z <= config.maxzoom; z++) {
+                        const min = tc.tiles(point([info.bounds[0], info.bounds[1]]).geometry, { min_zoom: z, max_zoom: z })[0];
+                        const max = tc.tiles(point([info.bounds[2], info.bounds[3]]).geometry, { min_zoom: z, max_zoom: z })[0];
+
+                        config.ranges[z] = [min[0], min[1], max[0], max[1]];
+                    }
+
+                    return resolve();
+                });
+            });
+        });
     }
 
     /**
@@ -103,7 +139,3 @@ class TileBase {
 
     }
 }
-
-module.exports = {
-    TileBase
-};

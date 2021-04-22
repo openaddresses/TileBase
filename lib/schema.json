@@ -1,0 +1,19 @@
+{
+    "type": "object",
+    "required": [
+        "min",
+        "max",
+        "ranges"
+    ],
+    "properties": {
+        "min": {
+            "type": "integer"
+        },
+        "max": {
+            "type": "integer"
+        },
+        "ranges": {
+
+        }
+    }
+}

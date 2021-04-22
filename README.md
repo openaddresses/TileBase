@@ -11,9 +11,9 @@ operation of pushing individual tiles to the store.
 
 __TileBase File__
 ```
-<Magic Bytes><Fixed Length Tile Config>
-
-<Variable Length Tile Config>
+<Magic Bytes><Version><File Config Length>
+<Variable Length File Config>
+<Variable Length Tile Addresses>
 <Variable Length Tile Data>
 ```
 
@@ -52,7 +52,7 @@ D3      1234 bytes
 }
 ```
 
-### Tile Config
+### Tile Addresses
 
 ```
 LE-UInt64 Memory Address
