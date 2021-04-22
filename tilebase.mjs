@@ -136,6 +136,7 @@ export default class TileBase {
 
     static write_config(output, config) {
         config = JSON.stringify(config);
+        if (config.length > 4294967295) throw new Error('Config Exceeds allowed byte size');
 
         const buff = new Buffer.alloc(7 + config.length);
         buff[0] = 116; // Magic Number
