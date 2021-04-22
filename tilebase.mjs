@@ -26,6 +26,7 @@ export default class TileBase {
     constructor(loc) {
         this.config_length = 0;
 
+        this.version = null;
         this.handle = fs.openSync(loc);
         this.config = {};
 
@@ -50,6 +51,7 @@ export default class TileBase {
             throw new Error('Unsupported Version');
         }
 
+        this.version = buff[2];
         this.config_length = buff.readUInt32BE(3);
 
         return this.config_length;
@@ -68,7 +70,7 @@ export default class TileBase {
     config_verify(config) {
         const ajv = new Ajv();
         const valid = ajv.validate(schema, config);
-        if (!valid) throw new Error(ajv.errors);
+        if (!valid) throw new Error(JSON.stringify(ajv.errors));
 
         for (let z = config.min; z <= config.max; z++) {
             const range = config.ranges[z];
@@ -99,8 +101,8 @@ export default class TileBase {
     static to_tb(input, output) {
         return new Promise((resolve, reject) => {
             const config = {
-                minzoom: false,
-                maxzoom: false,
+                min: false,
+                max: false,
                 ranges: {}
             };
 
@@ -114,20 +116,35 @@ export default class TileBase {
                     if (isNaN(Number(info.maxzoom))) return reject(new Error('Missing metadata.maxzoom'));
                     if (!info.bounds) return reject(new Error('Missing metadata.bounds'));
 
-                    config.minzoom = info.minzoom;
-                    config.maxzoom = info.maxzoom;
+                    config.min = info.minzoom;
+                    config.max = info.maxzoom;
 
-                    for (let z = config.minzoom; z <= config.maxzoom; z++) {
+                    for (let z = config.min; z <= config.max; z++) {
                         const min = tc.tiles(point([info.bounds[0], info.bounds[1]]).geometry, { min_zoom: z, max_zoom: z })[0];
                         const max = tc.tiles(point([info.bounds[2], info.bounds[3]]).geometry, { min_zoom: z, max_zoom: z })[0];
 
                         config.ranges[z] = [min[0], min[1], max[0], max[1]];
                     }
 
-                    return resolve();
+                    TileBase.write_config(output, config);
+
+                    return resolve(new TileBase(output));
                 });
             });
         });
+    }
+
+    static write_config(output, config) {
+        config = JSON.stringify(config);
+
+        const buff = new Buffer.alloc(7 + config.length);
+        buff[0] = 116; // Magic Number
+        buff[1] = 98;
+        buff[2] = 1; // Version Number
+        buff.writeUInt32BE(config.length, 3)
+        buff.write(config, 7);
+
+        fs.writeFileSync(output, buff);
     }
 
     /**
