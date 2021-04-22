@@ -19,10 +19,10 @@ __TileBase File__
 
 ### File Header
 
-Every TileBelt file will begin with `74 62` (`tb` in ASCII)  followed by an 8-bit unsigned integer
-representing the TileBelt spec version number.
+Every TileBase file will begin with `74 62` (`tb` in ASCII)  followed by an 8-bit unsigned integer
+representing the TileBase spec version number.
 
-Since there is currently only one version of the spec, all Tilebelt files will start with the following:
+Since there is currently only one version of the spec, all TileBase files will start with the following:
 ```
 74 62 01
 ```
@@ -42,7 +42,7 @@ D3      1234 bytes
 
 ### File Config
 
-```JSON
+```
 {
     "min": <min zoom>,
     "max": <max zoom>,
