@@ -37,16 +37,15 @@ test('TileBase#To_TB', async (t) => {
             }
         }, 'config: { obj }');
 
-        let tile;
-
+        let tile = false;
         tile = await tb.tile(0, 0, 0, true);
+        console.error(Protobuf);
         tile = new VectorTile(Protobuf(tile))
+
+        tile = await tb.tile(1, 0, 0, true);
         console.error(tile);
 
-        tile = await tb.tile(1, 0, 0);
-        console.error(tile);
-
-        tile = await tb.tile(2, 1, 1);
+        tile = await tb.tile(2, 1, 1, true);
         console.error(tile);
     } catch (err) {
         t.error(err, 'no errors');

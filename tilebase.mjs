@@ -118,18 +118,19 @@ export default class TileBase {
         let idxbuff = Buffer.alloc(16);
         fs.readSync(this.handle, idxbuff, 0, 16, this.start_index + (tiles * 16));
 
-        const idx = idxbuff.readBigUInt64LE(0);
+        const idx = Number(idxbuff.readBigUInt64LE(0));
         const size = Number(idxbuff.readBigUInt64LE(8));
 
         if (size === 0) {
             return Buffer.alloc(0);
         } else {
-            const tile = Buffer.alloc(size);
-            fs.readSync(this.handle, tile, 0, size, idx);
+            let tile = Buffer.alloc(size);
+            fs.readSync(this.handle, tile, 0, size, this.start_tile + idx);
 
             if (!unzip) return tile;
 
-            return await gunzip(tile);
+            tile = await gunzip(tile);
+            return new Uint8Array(tile).buffer;
         }
     }
 
@@ -219,10 +220,10 @@ export default class TileBase {
 
         function getTile(mbtiles, z, x, y) {
             return new Promise((resolve, reject) => {
-                mbtiles.getTile(z, x, y, (err, info) => {
+                mbtiles.getTile(z, x, y, (err, tile) => {
                     if (err && err.message === 'Tile does not exist') return resolve(Buffer.alloc(0));
                     if (err) return reject(err);
-                    return resolve(info);
+                    return resolve(tile);
                 });
             });
         }
