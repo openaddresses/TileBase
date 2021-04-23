@@ -3,6 +3,9 @@ import path from 'path';
 import TileBase from '../tilebase.mjs'
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { VectorTile } from '@mapbox/vector-tile';
+import Protobuf from 'pbf';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 test('TileBase#To_TB', async (t) => {
@@ -36,7 +39,8 @@ test('TileBase#To_TB', async (t) => {
 
         let tile;
 
-        tile = await tb.tile(0, 0, 0);
+        tile = await tb.tile(0, 0, 0, true);
+        tile = new VectorTile(Protobuf(tile))
         console.error(tile);
 
         tile = await tb.tile(1, 0, 0);

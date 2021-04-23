@@ -7,10 +7,12 @@ import { fileURLToPath } from 'url';
 import MBTiles from '@mapbox/mbtiles';
 import tc from '@mapbox/tile-cover';
 import { point } from '@turf/helpers';
+import zlib from 'zlib';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const schema = JSON.parse(fs.readFileSync(path.resolve(__dirname, './lib/schema.json')));
+const gunzip = promisify(zlib.gunzip);
 
 /**
  * @class Tilebase
@@ -82,12 +84,12 @@ export default class TileBase {
     }
 
     index_count() {
-        let bytes = 0;
+        let tiles = 0;
         for (let c = this.config.min; c <= this.config.max; c++) {
-            bytes += (this.config.ranges[c][2] - this.config.ranges[c][0]) * (this.config.ranges[c][3] - this.config.ranges[c][1]) + 1
+            tiles += (this.config.ranges[c][2] - this.config.ranges[c][0]) * (this.config.ranges[c][3] - this.config.ranges[c][1]) + 1
         }
 
-        return bytes;
+        return tiles * 16;
     }
 
     /**
@@ -99,22 +101,22 @@ export default class TileBase {
      *
      * @returns Buffer Tile
      */
-    async tile(z, x, y) {
+    async tile(z, x, y, unzip = false) {
         if (!this.config.ranges[z]) throw new Error('Zoom not supported');
         if (x < this.config.ranges[z][0] || x > this.config.ranges[z][2]) throw new Error('X out of range');
         if (y < this.config.ranges[z][1] || x > this.config.ranges[z][3]) throw new Error('Y out of range');
 
-        let bytes = 0;
+        let tiles = 0;
         for (let c = this.config.min; c < z; c++) {
-            bytes += (this.config.ranges[c][2] - this.config.ranges[c][0]) * (this.config.ranges[c][3] - this.config.ranges[c][1]) + 1
+            tiles += (this.config.ranges[c][2] - this.config.ranges[c][0]) * (this.config.ranges[c][3] - this.config.ranges[c][1]) + 1
         }
 
         const x_diff = this.config.ranges[z][2] - this.config.ranges[z][0];
-        bytes += x_diff * (y - this.config.ranges[z][1]);
-        bytes += x - this.config.ranges[z][0]
+        tiles += x_diff * (y - this.config.ranges[z][1]);
+        tiles += x - this.config.ranges[z][0]
 
         let idxbuff = Buffer.alloc(16);
-        fs.readSync(this.handle, idxbuff, 0, 16, this.start_index + bytes);
+        fs.readSync(this.handle, idxbuff, 0, 16, this.start_index + (tiles * 16));
 
         const idx = idxbuff.readBigUInt64LE(0);
         const size = Number(idxbuff.readBigUInt64LE(8));
@@ -125,7 +127,9 @@ export default class TileBase {
             const tile = Buffer.alloc(size);
             fs.readSync(this.handle, tile, 0, size, idx);
 
-            return tile;
+            if (!unzip) return tile;
+
+            return await gunzip(tile);
         }
     }
 
