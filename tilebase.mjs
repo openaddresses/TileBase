@@ -86,8 +86,21 @@ export default class TileBase {
      *
      * @returns Buffer Tile
      */
-    tile(z, x, y) {
+    async tile(z, x, y) {
+        if (!this.config.ranges[z]) throw new Error('Zoom not supported');
+        if (x < this.config.ranges[z][0] || x > this.config.ranges[z][2]) throw new Error('X out of range');
+        if (y < this.config.ranges[z][1] || x > this.config.ranges[z][3]) throw new Error('Y out of range');
 
+        let bytes = 0;
+        for (let c = this.config.min; c < z; c++) {
+            bytes += (this.config.ranges[c][2] - this.config.ranges[c][0]) * (this.config.ranges[c][3] - this.config.ranges[c][1]) + 1
+        }
+
+        const x_diff = this.config.ranges[z][2] - this.config.ranges[z][0];
+        bytes += x_diff * (y - this.config.ranges[z][1]);
+        bytes += x - this.config.ranges[z][0]
+
+        return bytes;
     }
 
     /**

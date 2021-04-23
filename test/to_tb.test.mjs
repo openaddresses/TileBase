@@ -33,6 +33,17 @@ test('TileBase#To_TB', async (t) => {
                 14: [ 4579, 6271, 4579, 6271 ]
             }
         }, 'config: { obj }');
+
+        let tile;
+
+        tile = await tb.tile(0, 0, 0);
+        console.error(tile);
+
+        tile = await tb.tile(1, 0, 0);
+        console.error(tile);
+
+        tile = await tb.tile(2, 1, 1);
+        console.error(tile);
     } catch (err) {
         t.error(err, 'no errors');
     }
