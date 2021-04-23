@@ -24,7 +24,7 @@ export default class TileBase {
      * @constructor
      */
     constructor(loc) {
-        this.config_length = 0;
+        this.config_length = 0; // The length of the config object in bytes
 
         this.version = null;
         this.handle = fs.openSync(loc);
@@ -33,6 +33,10 @@ export default class TileBase {
         this.config_range();
         this.config_read();
         this.config_verify(this.config);
+
+        this.start_index = 7 + this.config_length; // The number of bytes to the start of the index
+        this.start_tile = this.start_index + this.index_count(); // The number of bytes to the start of the tiles
+
     }
 
     /**
@@ -77,6 +81,15 @@ export default class TileBase {
         }
     }
 
+    index_count() {
+        let bytes = 0;
+        for (let c = this.config.min; c <= this.config.max; c++) {
+            bytes += (this.config.ranges[c][2] - this.config.ranges[c][0]) * (this.config.ranges[c][3] - this.config.ranges[c][1]) + 1
+        }
+
+        return bytes;
+    }
+
     /**
      * Return a single tile from a TileBase file
      *
@@ -100,7 +113,20 @@ export default class TileBase {
         bytes += x_diff * (y - this.config.ranges[z][1]);
         bytes += x - this.config.ranges[z][0]
 
-        return bytes;
+        let idxbuff = Buffer.alloc(16);
+        fs.readSync(this.handle, idxbuff, 0, 16, this.start_index + bytes);
+
+        const idx = idxbuff.readBigUInt64LE(0);
+        const size = Number(idxbuff.readBigUInt64LE(8));
+
+        if (size === 0) {
+            return Buffer.alloc(0);
+        } else {
+            const tile = Buffer.alloc(size);
+            fs.readSync(this.handle, tile, 0, size, idx);
+
+            return tile;
+        }
     }
 
     /**
