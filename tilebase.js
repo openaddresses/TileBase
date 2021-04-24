@@ -1,15 +1,13 @@
-import fs from 'fs';
-import path from 'path';
-import Ajv from 'ajv';
-import { promisify } from 'util';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import MBTiles from '@mapbox/mbtiles';
-import tc from '@mapbox/tile-cover';
-import { point } from '@turf/helpers';
-import zlib from 'zlib';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const fs = require('fs');
+const path = require('path');
+const Ajv = require('ajv');
+const { promisify } = require('util');
+const { dirname } = require('path');
+const { fileURLToPath } = require('url');
+const MBTiles = require('@mapbox/mbtiles');
+const tc = require('@mapbox/tile-cover');
+const { point } = require('@turf/helpers');
+const zlib = require('zlib');
 
 const schema = JSON.parse(fs.readFileSync(path.resolve(__dirname, './lib/schema.json')));
 const gunzip = promisify(zlib.gunzip);
@@ -21,7 +19,7 @@ const gunzip = promisify(zlib.gunzip);
  * @prop {Number} config_length Length of Config in Bytes
  * @prop {FileHandle|MemHandle} handle TileBase read options
  */
-export default class TileBase {
+class TileBase {
     /**
      * @constructor
      */
@@ -252,3 +250,5 @@ export default class TileBase {
 
     }
 }
+
+module.exports = TileBase;

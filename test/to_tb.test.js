@@ -1,12 +1,10 @@
-import test from 'tape';
-import path from 'path';
-import TileBase from '../tilebase.mjs'
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { VectorTile } from '@mapbox/vector-tile';
-import Protobuf from 'pbf';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const test = require('tape');
+const path = require('path');
+const TileBase = require('../tilebase.js');
+const { dirname } = require('path');
+const { fileURLToPath } = require('url');
+const { VectorTile } = require('@mapbox/vector-tile');
+const Protobuf = require('pbf');
 
 test('TileBase#To_TB', async (t) => {
     try {
@@ -39,14 +37,16 @@ test('TileBase#To_TB', async (t) => {
 
         let tile = false;
         tile = await tb.tile(0, 0, 0, true);
-        console.error(Protobuf);
-        tile = new VectorTile(Protobuf(tile))
+        tile = new VectorTile(new Protobuf(tile))
+        t.equals(tile.layers.feat.length, 1);
 
         tile = await tb.tile(1, 0, 0, true);
-        console.error(tile);
+        tile = new VectorTile(new Protobuf(tile))
+        t.equals(tile.layers.feat.length, 1);
 
         tile = await tb.tile(2, 1, 1, true);
-        console.error(tile);
+        tile = new VectorTile(new Protobuf(tile))
+        t.equals(tile.layers.feat.length, 1);
     } catch (err) {
         t.error(err, 'no errors');
     }
