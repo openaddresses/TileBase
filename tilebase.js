@@ -8,8 +8,9 @@ const MBTiles = require('@mapbox/mbtiles');
 const tc = require('@mapbox/tile-cover');
 const { point } = require('@turf/helpers');
 const zlib = require('zlib');
+const interfaces = require('./lib/interfaces');
 
-const schema = JSON.parse(fs.readFileSync(path.resolve(__dirname, './lib/schema.json')));
+const schema = require('./lib/schema.json');
 const gunzip = promisify(zlib.gunzip);
 
 /**
@@ -22,6 +23,8 @@ const gunzip = promisify(zlib.gunzip);
  * @prop {Number} start_tile Byte Index to start of Tile Data
  * @prop {Number} version TileBase Version
  *
+ * @prop {Boolean} isopen Is the TileBase file open
+ *
  * @prop {FileHandle|MemHandle} handle TileBase read options
  */
 class TileBase {
@@ -29,19 +32,34 @@ class TileBase {
      * @constructor
      */
     constructor(loc) {
+        this.isopen = false;
+
         this.version = null;
 
         this.config_length = 0; // The length of the config object in bytes
 
-        this.handle = fs.openSync(loc);
+        const p = new URL(loc);
+        if (!interfaces[p.protocol]) throw new Error(`${p.protocol} not supported`);
+
+        this.handler = new interfaces[p.protocol](loc);
         this.config = {};
 
-        this.config_range();
-        this.config_read();
+        this.start_index = false;
+        this.start_tile = false;
+
+    }
+
+    async open() {
+        await this.handler.open();
+
+        await this.config_range();
+        await this.config_read();
         this.config_verify(this.config);
 
         this.start_index = 7 + this.config_length; // The number of bytes to the start of the index
         this.start_tile = this.start_index + this.index_count(); // The number of bytes to the start of the tiles
+
+        this.isopen = true;
     }
 
     /**
@@ -50,9 +68,8 @@ class TileBase {
      *
      * @returns {Number} Bytes of Config Data
      */
-    config_range() {
-        const buff = new Buffer.alloc(7);
-        fs.readSync(this.handle, buff);
+    async config_range() {
+        const buff = await this.handler.read(0, 7);
 
         if (buff[0] !== 116 && buff[1] !== 98) {
             throw new Error('Invalid TileBase File');
@@ -66,11 +83,11 @@ class TileBase {
         return this.config_length;
     }
 
-    config_read() {
-        let config = new Buffer.alloc(this.config_length);
-        fs.readSync(this.handle, config), 7;
+    async config_read() {
+        const buff = await this.handler.read(7, this.config_length);
+
         try {
-            this.config = JSON.parse(config.toString());
+            this.config = JSON.parse(buff.toString());
         } catch (err) {
             throw new Error('JSON Config could not be parsed');
         }
@@ -118,8 +135,7 @@ class TileBase {
         tiles += x_diff * (y - this.config.ranges[z][1]);
         tiles += x - this.config.ranges[z][0]
 
-        let idxbuff = Buffer.alloc(16);
-        fs.readSync(this.handle, idxbuff, 0, 16, this.start_index + (tiles * 16));
+        const idxbuff = await this.handler.read(this.start_index + (tiles * 16), 16);
 
         const idx = Number(idxbuff.readBigUInt64LE(0));
         const size = Number(idxbuff.readBigUInt64LE(8));
@@ -127,8 +143,7 @@ class TileBase {
         if (size === 0) {
             return Buffer.alloc(0);
         } else {
-            let tile = Buffer.alloc(size);
-            fs.readSync(this.handle, tile, 0, size, this.start_tile + idx);
+            let tile = await this.handler.read(this.start_tile + idx, size);
 
             if (!unzip) return tile;
 
@@ -204,7 +219,7 @@ class TileBase {
 
                     tb.on('close', () => {
                         fs.unlinkSync(output + '.tiles');
-                        return resolve(new TileBase(output));
+                        return resolve(new TileBase('file://' + output));
                     });
                 } catch (err) {
                     return reject(err);

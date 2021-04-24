@@ -10,6 +10,8 @@ test('TileBase#To_TB', async (t) => {
     try {
         const tb = await TileBase.to_tb(path.resolve(__dirname, './fixtures/single.mbtiles'), '/tmp/test.tb');
 
+        await tb.open();
+
         t.ok(tb instanceof TileBase, 'TileBase');
         t.equals(tb.config_length, 318, 'config_length: 318');
         t.equals(tb.version, 1, 'version: 1');
@@ -45,6 +47,10 @@ test('TileBase#To_TB', async (t) => {
         t.equals(tile.layers.feat.length, 1);
 
         tile = await tb.tile(2, 1, 1, true);
+        tile = new VectorTile(new Protobuf(tile))
+        t.equals(tile.layers.feat.length, 1);
+
+        tile = await tb.tile(14, 4579, 6271, true);
         tile = new VectorTile(new Protobuf(tile))
         t.equals(tile.layers.feat.length, 1);
     } catch (err) {
