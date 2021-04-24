@@ -17,6 +17,11 @@ const gunzip = promisify(zlib.gunzip);
  *
  * @prop {Object} config Read Config Options
  * @prop {Number} config_length Length of Config in Bytes
+ *
+ * @prop {Number} start_index Byte Index to start of Tile Addresses
+ * @prop {Number} start_tile Byte Index to start of Tile Data
+ * @prop {Number} version TileBase Version
+ *
  * @prop {FileHandle|MemHandle} handle TileBase read options
  */
 class TileBase {
@@ -24,9 +29,10 @@ class TileBase {
      * @constructor
      */
     constructor(loc) {
+        this.version = null;
+
         this.config_length = 0; // The length of the config object in bytes
 
-        this.version = null;
         this.handle = fs.openSync(loc);
         this.config = {};
 
