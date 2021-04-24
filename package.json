@@ -2,7 +2,7 @@
     "name": "tilebase",
     "version": "1.0.0",
     "description": "Range based Single File MBTiles like Store",
-    "main": "tilebase.mjs",
+    "main": "tilebase.js",
     "scripts": {
         "doc": "documentation build tilebase.js -f html -o docs",
         "test": "tape test/**.test.js"

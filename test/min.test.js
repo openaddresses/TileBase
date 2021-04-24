@@ -1,6 +1,6 @@
 const path = require('path');
 const test = require('tape');
-const {TileBase} = require('../');
+const TileBase = require('../');
 
 test('Min', (t) => {
     const tb = new TileBase(path.resolve(__dirname, './fixtures', 'min.tb'));

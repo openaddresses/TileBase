@@ -36,7 +36,6 @@ class TileBase {
 
         this.start_index = 7 + this.config_length; // The number of bytes to the start of the index
         this.start_tile = this.start_index + this.index_count(); // The number of bytes to the start of the tiles
-
     }
 
     /**
@@ -56,7 +55,7 @@ class TileBase {
         }
 
         this.version = buff[2];
-        this.config_length = buff.readUInt32BE(3);
+        this.config_length = buff.readUInt32LE(3);
 
         return this.config_length;
     }
@@ -235,7 +234,7 @@ class TileBase {
         buff[0] = 116; // Magic Number
         buff[1] = 98;
         buff[2] = 1; // Version Number
-        buff.writeUInt32BE(config.length, 3)
+        buff.writeUInt32LE(config.length, 3)
         buff.write(config, 7);
 
         fs.writeFileSync(output, buff);
