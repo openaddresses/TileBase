@@ -9,6 +9,29 @@ TileBase can be accessed in several ways through the following client libraries
 | -------- | ---- |
 | NodeJS   | [USAGE](https://openaddresses.github.io/tilebase/)
 
+## Command Line Library
+
+The default command line requires that node be installed. The easiest way to do this
+is usually via [NVM](https://github.com/nvm-sh/nvm)
+
+Once node is installed, from the git repository, run the following to install
+dependencies.
+
+
+```sh
+npm install
+```
+
+```sh
+npm link
+```
+
+The TileBase cli should now be able to be used from your command line via
+
+```sh
+tilebase --help
+```
+
 ## Format Spec (v1)
 
 A TileBase file is designed as a single file tile store. It is functionally similiar to a MBTiles file,

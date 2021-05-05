@@ -3,9 +3,10 @@
     "version": "1.0.0",
     "description": "Range based Single File MBTiles like Store",
     "main": "tilebase.js",
+    "bin": "cli.js",
     "scripts": {
         "doc": "documentation build tilebase.js -f html -o docs && documentation lint tilebase.js",
-        "lint": "eslint tilebase.js lib/**.js test/**.js",
+        "lint": "eslint tilebase.js cli.js lib/**.js test/**.js",
         "test": "tape test/**.test.js"
     },
     "repository": {
@@ -39,6 +40,7 @@
         "@turf/helpers": "^6.3.0",
         "ajv": "^8.2.0",
         "aws-sdk": "^2.900.0",
+        "minimist": "^1.2.5",
         "node-fetch": "^2.6.1",
         "nyc": "^15.1.0",
         "pbf": "^3.2.1"
