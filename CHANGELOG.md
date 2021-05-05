@@ -10,6 +10,10 @@
 
 ## Version History
 
+### v1.2.0
+
+- :tada: Add support for `http://`, `https://`, & `s3://`
+
 ### v1.1.0
 
 - :tada: Add Config class to clean up TileBase interface, most functions exposed via
