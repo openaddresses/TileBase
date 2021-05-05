@@ -1,7 +1,6 @@
 'use strict';
 
 const test = require('tape');
-const path = require('path');
 const TileBase = require('../tilebase.js');
 const { VectorTile } = require('@mapbox/vector-tile');
 const Protobuf = require('pbf');
