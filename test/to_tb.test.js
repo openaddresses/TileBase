@@ -40,19 +40,21 @@ test('TileBase#To_TB', async (t) => {
         let tile = false;
         tile = await tb.tile(0, 0, 0, true);
         tile = new VectorTile(new Protobuf(tile))
-        t.equals(tile.layers.feat.length, 1);
+        t.equals(tile.layers.feat.length, 1, 'z0 feat');
 
         tile = await tb.tile(1, 0, 0, true);
         tile = new VectorTile(new Protobuf(tile))
-        t.equals(tile.layers.feat.length, 1);
+        t.equals(tile.layers.feat.length, 1, 'z1 feat');
 
         tile = await tb.tile(2, 1, 1, true);
         tile = new VectorTile(new Protobuf(tile))
-        t.equals(tile.layers.feat.length, 1);
+        t.equals(tile.layers.feat.length, 1, 'z2 feat');
 
         tile = await tb.tile(14, 4579, 6271, true);
         tile = new VectorTile(new Protobuf(tile))
-        t.equals(tile.layers.feat.length, 1);
+        t.equals(tile.layers.feat.length, 1, 'z14 feat');
+
+        await tb.close();
     } catch (err) {
         t.error(err, 'no errors');
     }

@@ -62,6 +62,11 @@ class TileBase {
         this.isopen = true;
     }
 
+    async close() {
+        await this.handler.close();
+        this.isopen = false;
+    }
+
     /**
      * Read the config portion of a TileBase file
      *   Note: usually called by the constructor
