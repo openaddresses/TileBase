@@ -1,6 +1,6 @@
 {
     "name": "tilebase",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Range based Single File MBTiles like Store",
     "main": "tilebase.js",
     "bin": "cli.js",
@@ -29,9 +29,9 @@
     "homepage": "https://github.com/openaddresses/TileBase#readme",
     "devDependencies": {
         "documentation": "^13.2.5",
-        "tape": "^5.2.2",
         "eslint": "^7.25.0",
-        "eslint-plugin-node": "^11.1.0"
+        "eslint-plugin-node": "^11.1.0",
+        "tape": "^5.2.2"
     },
     "dependencies": {
         "@mapbox/mbtiles": "^0.12.1",
