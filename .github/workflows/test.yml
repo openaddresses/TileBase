@@ -25,7 +25,7 @@ jobs:
                   aws-region: us-east-1
 
             - name: Install
-              run: npm test
+              run: npm install
 
             - name: Test
               run: npm test
