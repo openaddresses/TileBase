@@ -12,8 +12,7 @@ const interfaces = require('./lib/interfaces');
 const gunzip = promisify(zlib.gunzip);
 
 /**
- * @class Tilebase
- *
+ * @class
  * @prop {Config} config Read Config Options
  * @prop {number} config_length Length of Config in Bytes
  *

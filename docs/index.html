@@ -30,50 +30,51 @@
                 
                 <li><a
                   href='#tilebase'
-                  class="">
-                  Tilebase
-                  
+                  class=" toggle-sibling">
+                  TileBase
+                  <span class='icon'>▸</span>
                 </a>
                 
-                </li>
-              
-                
-                <li><a
-                  href='#open'
-                  class="">
-                  open
+                <div class='toggle-target display-none'>
                   
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#close'
-                  class="">
-                  close
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#tilebaseto_tb'
+                        class='regular pre-open'>
+                        .to_tb
+                      </a></li>
+                    
+                    </ul>
                   
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#tile'
-                  class="">
-                  tile
                   
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#to_tb'
-                  class="">
-                  to_tb
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#tilebaseopen'
+                        class='regular pre-open'>
+                        #open
+                      </a></li>
+                      
+                      <li><a
+                        href='#tilebaseclose'
+                        class='regular pre-open'>
+                        #close
+                      </a></li>
+                      
+                      <li><a
+                        href='#tilebasetile'
+                        class='regular pre-open'>
+                        #tile
+                      </a></li>
+                      
+                    </ul>
                   
-                </a>
+                  
+                  
+                </div>
                 
                 </li>
               
@@ -228,7 +229,7 @@
   <div class='clearfix'>
     
     <h3 class='fl m0' id='tilebase'>
-      Tilebase
+      TileBase
     </h3>
     
     
@@ -236,7 +237,7 @@
   
 
   
-    <div class='pre p1 fill-light mt0'>new Tilebase()</div>
+    <div class='pre p1 fill-light mt0'>new TileBase(url: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, opts: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
   
   
 
@@ -247,6 +248,29 @@
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>url</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    URL location of TileBase
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>opts</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    Options Object
+
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -314,6 +338,78 @@
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='tilebaseto_tb'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>to_tb(input, output)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Convert an MBtiles file to TileBase</p>
+
+    <div class='pre p1 fill-light mt0'>to_tb(input: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, output: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): any</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>input</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Location to input MBTiles
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>output</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Location to output TileBase
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>any</code>:
+        TileBase
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
 
   
 
@@ -322,20 +418,27 @@
   
 </section>
 
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
+      </div>
+    </div>
+  
+</div>
 
   
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='open'>
-      open
-    </h3>
-    
-    
-  </div>
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='tilebaseopen'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>open()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
   
 
   <p>Open a TileBase file for reading</p>
@@ -372,20 +475,19 @@
   
 </section>
 
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
+      </div>
+    </div>
   
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='close'>
-      close
-    </h3>
-    
-    
-  </div>
+    <div class='border-bottom' id='tilebaseclose'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>close()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
   
 
   <p>Close a TileBase file from reading</p>
@@ -422,20 +524,19 @@
   
 </section>
 
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
+      </div>
+    </div>
   
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='tile'>
-      tile
-    </h3>
-    
-    
-  </div>
+    <div class='border-bottom' id='tilebasetile'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>tile(z, x, y, unzip)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
   
 
   <p>Return a single tile from a TileBase file</p>
@@ -522,79 +623,10 @@
   
 </section>
 
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='to_tb'>
-      to_tb
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Convert an MBtiles file to TileBase</p>
-
-    <div class='pre p1 fill-light mt0'>to_tb(input: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, output: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): any</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>input</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Location to input MBTiles
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>output</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Location to output TileBase
-
-          </div>
-          
-        </div>
-      
+      </div>
     </div>
   
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code>any</code>:
-        TileBase
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
+</div>
 
   
 
@@ -620,7 +652,7 @@
   
 
   
-    <div class='pre p1 fill-light mt0'>new Config()</div>
+    <div class='pre p1 fill-light mt0'>new Config(tb: any)</div>
   
   
 
@@ -631,6 +663,19 @@
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>tb</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -638,7 +683,7 @@
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>tb</span> <code class='quiet'>(TileBase)</code>
+          <span class='code bold'>tb</span> <code class='quiet'>(<a href="#tilebase">TileBase</a>)</code>
           : TileBase Object
 
           
@@ -946,7 +991,7 @@ Note: usually called by the constructor</p>
   
 
   
-    <div class='pre p1 fill-light mt0'>new TileBaseFile()</div>
+    <div class='pre p1 fill-light mt0'>new TileBaseFile(loc: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
   
 
@@ -957,6 +1002,20 @@ Note: usually called by the constructor</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>loc</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Location of TileBase file
+
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -1092,7 +1151,7 @@ Note: usually called by the constructor</p>
   
 
   
-    <div class='pre p1 fill-light mt0'>new TileBaseS3()</div>
+    <div class='pre p1 fill-light mt0'>new TileBaseS3(loc: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
   
 
@@ -1103,6 +1162,20 @@ Note: usually called by the constructor</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>loc</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    S3 Location of TileBase file
+
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -1238,7 +1311,7 @@ Note: usually called by the constructor</p>
   
 
   
-    <div class='pre p1 fill-light mt0'>new TileBaseHTTP()</div>
+    <div class='pre p1 fill-light mt0'>new TileBaseHTTP(loc: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
   
 
@@ -1249,6 +1322,20 @@ Note: usually called by the constructor</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>loc</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    HTTP Location of TileBase file
+
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   

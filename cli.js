@@ -50,7 +50,7 @@ async function convert() {
     }
 
     try {
-        const tb = await TileBase.to_tb(
+        await TileBase.to_tb(
             path.resolve(__dirname, argv._[3]),
             path.resolve(__dirname, argv._[4])
         );
