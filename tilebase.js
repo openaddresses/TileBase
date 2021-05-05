@@ -15,13 +15,13 @@ const gunzip = promisify(zlib.gunzip);
  * @class Tilebase
  *
  * @prop {Config} config Read Config Options
- * @prop {Number} config_length Length of Config in Bytes
+ * @prop {number} config_length Length of Config in Bytes
  *
- * @prop {Number} start_index Byte Index to start of Tile Addresses
- * @prop {Number} start_tile Byte Index to start of Tile Data
- * @prop {Number} version TileBase Version
+ * @prop {number} start_index Byte Index to start of Tile Addresses
+ * @prop {number} start_tile Byte Index to start of Tile Data
+ * @prop {number} version TileBase Version
  *
- * @prop {Boolean} isopen Is the TileBase file open
+ * @prop {boolean} isopen Is the TileBase file open
  *
  * @prop {FileHandle|MemHandle} handle TileBase read options
  */
@@ -29,7 +29,7 @@ class TileBase {
     /**
      * @constructor
      *
-     * @param {String} url URL location of TileBase
+     * @param {string} url URL location of TileBase
      * @param {Object} opts Options Object
      */
     constructor(url, opts) {
@@ -72,10 +72,10 @@ class TileBase {
     /**
      * Return a single tile from a TileBase file
      *
-     * @param {Number} z Z Coordinate
-     * @param {Number} x X Coordinate
-     * @param {Number} y Y Coordinate
-     * @param {Boolean} unzip Auto unzip tiles
+     * @param {number} z Z Coordinate
+     * @param {number} x X Coordinate
+     * @param {number} y Y Coordinate
+     * @param {boolean} unzip Auto unzip tiles
      *
      * @returns Buffer Tile
      */
@@ -113,8 +113,8 @@ class TileBase {
     /**
      * Convert an MBtiles file to TileBase
      *
-     * @param {String} input Location to input MBTiles
-     * @param {String} output Location to output TileBase
+     * @param {string} input Location to input MBTiles
+     * @param {string} output Location to output TileBase
      *
      * @returns TileBase
      */
