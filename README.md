@@ -63,7 +63,7 @@ that make up the JSON file config.
 
 ```
 74
-63      tb Magic Bytes
+62      tb Magic Bytes
 01      1
 D3
 04
