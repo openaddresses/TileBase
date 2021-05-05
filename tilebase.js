@@ -51,7 +51,12 @@ class TileBase {
 
     }
 
+    /**
+     * Open a TileBase file for reading
+     */
     async open() {
+        if (this.isopen) throw new Error('TileBase file is already open');
+
         await this.handler.open();
 
         await this.config.range();
@@ -64,7 +69,12 @@ class TileBase {
         this.isopen = true;
     }
 
+    /**
+     * Close a TileBase file from reading
+     */
     async close() {
+        if (!this.isopen) throw new Error('TileBase file is already closed');
+
         await this.handler.close();
         this.isopen = false;
     }
