@@ -5,6 +5,7 @@
     "main": "tilebase.js",
     "scripts": {
         "doc": "documentation build tilebase.js -f html -o docs",
+        "lint": "eslint tilebase.js lib/**.js test/**.js",
         "test": "tape test/**.test.js"
     },
     "repository": {
@@ -27,7 +28,9 @@
     "homepage": "https://github.com/openaddresses/TileBase#readme",
     "devDependencies": {
         "documentation": "^13.2.5",
-        "tape": "^5.2.2"
+        "tape": "^5.2.2",
+        "eslint": "^7.25.0",
+        "eslint-plugin-node": "^11.1.0"
     },
     "dependencies": {
         "@mapbox/mbtiles": "^0.12.1",
@@ -36,6 +39,7 @@
         "@turf/helpers": "^6.3.0",
         "ajv": "^8.2.0",
         "aws-sdk": "^2.900.0",
+        "node-fetch": "^2.6.1",
         "nyc": "^15.1.0",
         "pbf": "^3.2.1"
     }

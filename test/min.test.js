@@ -1,3 +1,5 @@
+'use strict';
+
 const path = require('path');
 const test = require('tape');
 const TileBase = require('../');
@@ -7,7 +9,7 @@ test('Min', async (t) => {
         const tb = new TileBase('file://' + path.resolve(__dirname, './fixtures', 'min.tb'));
         await tb.open();
 
-        t.deepEquals(tb.config, {
+        t.deepEquals(tb.config.config, {
             min: 14,
             max: 14,
             ranges: {
