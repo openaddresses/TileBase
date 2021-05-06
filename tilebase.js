@@ -152,11 +152,13 @@ class TileBase {
 
                     // Create Config File & Write to DB
                     for (let z = config.min; z <= config.max; z++) {
-                        const min = tc.tiles(point([info.bounds[0], info.bounds[1]]).geometry, { min_zoom: z, max_zoom: z })[0];
-                        const max = tc.tiles(point([info.bounds[2], info.bounds[3]]).geometry, { min_zoom: z, max_zoom: z })[0];
+                        const p1 = tc.tiles(point([info.bounds[0], info.bounds[1]]).geometry, { min_zoom: z, max_zoom: z })[0];
+                        const p2 = tc.tiles(point([info.bounds[2], info.bounds[3]]).geometry, { min_zoom: z, max_zoom: z })[0];
 
-                        config.ranges[z] = [min[0], min[1], max[0], max[1]];
+                        config.ranges[z] = [p1[0], p2[1], p2[0], p1[1]];
                     }
+
+                    console.error(config);
                     Config.write(output, config);
 
                     const tb = fs.createWriteStream(output, { flags:'a' });
