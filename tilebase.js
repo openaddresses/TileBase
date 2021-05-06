@@ -21,8 +21,9 @@ const gunzip = promisify(zlib.gunzip);
  * @prop {number} version TileBase Version
  *
  * @prop {boolean} isopen Is the TileBase file open
+ * @prop {Object} opts Options Object
  *
- * @prop {FileHandle|MemHandle} handle TileBase read options
+ * @prop {Object} handler TileBase Protocol Handler
  */
 class TileBase {
     /**
@@ -30,11 +31,12 @@ class TileBase {
      *
      * @param {string} url URL location of TileBase
      * @param {Object} opts Options Object
+     * @param {boolean} opts.cache Cache the Config & Tile Addresses locally
      */
-    constructor(url, opts) {
-        if (!opts) opts = {};
-        this.isopen = false;
+    constructor(url, opts = {}) {
+        this.opts = opts;
 
+        this.isopen = false;
         this.version = null;
 
         this.config_length = 0; // The length of the config object in bytes
@@ -43,11 +45,13 @@ class TileBase {
         if (!interfaces[p.protocol]) throw new Error(`${p.protocol} not supported`);
 
         this.handler = new interfaces[p.protocol](url);
+
+        if (opts.cache && !this.handler.stream) throw new Error('Protocol does not support caching');
+
         this.config = new Config(this);
 
         this.start_index = false;
         this.start_tile = false;
-
     }
 
     /**
@@ -61,6 +65,8 @@ class TileBase {
         await this.config.range();
         await this.config.read();
         await this.config.verify();
+
+        if (this.opts.cache) await this.config.cache();
 
         this.start_index = 7 + this.config_length; // The number of bytes to the start of the index
         this.start_tile = this.start_index + this.config.index_count(); // The number of bytes to the start of the tiles
