@@ -10,6 +10,10 @@
 
 ## Version History
 
+### v1.3.1
+
+- :rocket: Remove console log
+
 ### v1.3.0
 
 - :bug: Fix a bug in bbox creation during conversion
