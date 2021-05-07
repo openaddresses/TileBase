@@ -158,7 +158,6 @@ class TileBase {
                         config.ranges[z] = [p1[0], p2[1], p2[0], p1[1]];
                     }
 
-                    console.error(config);
                     Config.write(output, config);
 
                     const tb = fs.createWriteStream(output, { flags:'a' });
