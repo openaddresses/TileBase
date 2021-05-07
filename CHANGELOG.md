@@ -10,6 +10,11 @@
 
 ## Version History
 
+### v1.3.0
+
+- :bug: Fix a bug in bbox creation during conversion
+- :rocket: Add stats printout at end of cli conversion
+
 ### v1.2.0
 
 - :tada: Add support for `http://`, `https://`, & `s3://`
