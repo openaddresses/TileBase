@@ -7,7 +7,7 @@ TileBase can be accessed in several ways through the following client libraries
 
 | Language | Link |
 | -------- | ---- |
-| NodeJS   | [USAGE](https://openaddresses.github.io/tilebase/)
+| NodeJS   | [USAGE](https://openaddresses.github.io/TileBase/)
 
 ## Command Line Library
 
