@@ -103,7 +103,7 @@ first byte after the Tile Addresses block.
 
 _Example: Single Tile Address_
 ```
-<LE-UInt64 Byte Address><LE-UInt64 Vector Tile Size>
+<LE-UInt64 Address><LE-UInt64 Vector Tile Size>
 ```
 
 ### Tile Data
