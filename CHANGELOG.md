@@ -10,6 +10,11 @@
 
 ## Version History
 
+### v1.3.2
+
+- :bug: Fix a bug in index_count where bounds weren't treated as inclusive
+- :white_check_mark: Add tests to confirm index counts
+
 ### v1.3.1
 
 - :rocket: Remove console log
