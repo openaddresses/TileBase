@@ -90,6 +90,13 @@ class TileBase {
      */
     async tile(z, x, y, unzip = false) {
         if (!this.isopen) throw new Error('TileBase file is not open');
+        z = parseInt(z);
+        x = parseInt(x);
+        y = parseInt(y);
+
+        for (const ele of [x, y, z]) {
+            if (isNaN(ele)) throw new Error('ZXY coordinates must be integers');
+        }
 
         if (!this.config.config.ranges[z]) throw new Error('Zoom not supported');
         if (x < this.config.config.ranges[z][0] || x > this.config.config.ranges[z][2]) throw new Error('X out of range');
