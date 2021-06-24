@@ -111,9 +111,10 @@ class TileBase {
         }
 
         // Calculate tile counts at requested zoom
-        const x_diff = this.config.config.ranges[z][2] - this.config.config.ranges[z][0];
-        tiles += x_diff * (y - this.config.config.ranges[z][1]);
-        tiles += x - this.config.config.ranges[z][0];
+        const x_diff = this.config.config.ranges[z][2] - this.config.config.ranges[z][0] + 1;
+        const pre = x_diff * (y - this.config.config.ranges[z][1]);
+
+        tiles += pre + x - this.config.config.ranges[z][0];
 
         const idxbuff = await this.handler.read(this.start_index + (tiles * 16), 16);
 
