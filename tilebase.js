@@ -99,8 +99,10 @@ class TileBase {
         }
 
         if (!this.config.config.ranges[z]) throw new Error('Zoom not supported');
-        if (x < this.config.config.ranges[z][0] || x > this.config.config.ranges[z][2]) throw new Error('X out of range');
-        if (y < this.config.config.ranges[z][1] || x > this.config.config.ranges[z][3]) throw new Error('Y out of range');
+        if (x < this.config.config.ranges[z][0]) throw new Error('X below range');
+        if (x > this.config.config.ranges[z][2]) throw new Error('X above range');
+        if (y < this.config.config.ranges[z][1]) throw new Error('Y below range');
+        if (y > this.config.config.ranges[z][3]) throw new Error('Y above range');
 
         let tiles = 0;
         for (let c = this.config.config.min; c < z; c++) {
