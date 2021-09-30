@@ -90,19 +90,31 @@ class TileBase {
      */
     async tile(z, x, y, unzip = false) {
         if (!this.isopen) throw new Error('TileBase file is not open');
+        z = parseInt(z);
+        x = parseInt(x);
+        y = parseInt(y);
 
-        if (!this.config.config.ranges[z]) throw new Error('Zoom not supported');
-        if (x < this.config.config.ranges[z][0] || x > this.config.config.ranges[z][2]) throw new Error('X out of range');
-        if (y < this.config.config.ranges[z][1] || x > this.config.config.ranges[z][3]) throw new Error('Y out of range');
-
-        let tiles = 0;
-        for (let c = this.config.config.min; c < z; c++) {
-            tiles += (this.config.config.ranges[c][2] - this.config.config.ranges[c][0]) * (this.config.config.ranges[c][3] - this.config.config.ranges[c][1]) + 1;
+        for (const ele of [x, y, z]) {
+            if (isNaN(ele)) throw new Error('ZXY coordinates must be integers');
         }
 
-        const x_diff = this.config.config.ranges[z][2] - this.config.config.ranges[z][0];
-        tiles += x_diff * (y - this.config.config.ranges[z][1]);
-        tiles += x - this.config.config.ranges[z][0];
+        if (!this.config.config.ranges[z]) throw new Error('Zoom not supported');
+        if (x < this.config.config.ranges[z][0]) throw new Error('X below range');
+        if (x > this.config.config.ranges[z][2]) throw new Error('X above range');
+        if (y < this.config.config.ranges[z][1]) throw new Error('Y below range');
+        if (y > this.config.config.ranges[z][3]) throw new Error('Y above range');
+
+        let tiles = 0;
+        // Calculate tile counts below requested zoom
+        for (let c = this.config.config.min; c < z; c++) {
+            tiles += (this.config.config.ranges[c][2] - this.config.config.ranges[c][0] + 1) * (this.config.config.ranges[c][3] - this.config.config.ranges[c][1] + 1);
+        }
+
+        // Calculate tile counts at requested zoom
+        const x_diff = this.config.config.ranges[z][2] - this.config.config.ranges[z][0] + 1;
+        const pre = x_diff * (y - this.config.config.ranges[z][1]);
+
+        tiles += pre + x - this.config.config.ranges[z][0];
 
         const idxbuff = await this.handler.read(this.start_index + (tiles * 16), 16);
 
