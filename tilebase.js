@@ -107,7 +107,7 @@ class TileBase {
         let tiles = 0;
         // Calculate tile counts below requested zoom
         for (let c = this.config.config.min; c < z; c++) {
-            tiles += (this.config.config.ranges[c][2] - this.config.config.ranges[c][0] + 1) * (this.config.config.ranges[c][3] - this.config.config.ranges[c][1] + 1)
+            tiles += (this.config.config.ranges[c][2] - this.config.config.ranges[c][0] + 1) * (this.config.config.ranges[c][3] - this.config.config.ranges[c][1] + 1);
         }
 
         // Calculate tile counts at requested zoom
