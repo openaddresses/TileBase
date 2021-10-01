@@ -10,6 +10,12 @@
 
 ## Version History
 
+### v1.4.0
+
+- :bug: Fix a major bug in tile generation
+- :arrow_up: Update all deps
+- :white_check_mark: Add 1:1 (byte:byte) tests between GetTile in TileBase vs MBTiles
+
 ### v1.3.2
 
 - :bug: Fix a bug in index_count where bounds weren't treated as inclusive
