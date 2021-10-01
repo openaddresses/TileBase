@@ -179,8 +179,8 @@ class TileBase {
 
                     // Request each of the tiles within a range for a specific zoom
                     for (let z = config.min; z <= config.max; z++) {
-                        for (let x = config.ranges[z][0]; x <= config.ranges[z][2]; x++) {
-                            for (let y = config.ranges[z][1]; y <= config.ranges[z][3]; y++) {
+                        for (let y = config.ranges[z][1]; y <= config.ranges[z][3]; y++) {
+                            for (let x = config.ranges[z][0]; x <= config.ranges[z][2]; x++) {
                                 const tile = await getTile(mbtiles, z, x, y);
                                 const tile_ln = BigInt(tile.length);
 
