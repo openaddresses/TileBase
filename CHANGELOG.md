@@ -10,6 +10,11 @@
 
 ## Version History
 
+### v1.5.0
+
+- :tada: Add `.tilejson()` function for generating a minimal TileJSON Object
+- :arrow_up: General Dep Update
+
 ### v1.4.0
 
 - :bug: Fix a major bug in tile generation
