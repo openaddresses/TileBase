@@ -48,6 +48,18 @@ test('TileBase#To_TB (complicated)', async (t) => {
 
         t.equals(tiles, 36, 'correct total tile count');
 
+        t.deepEquals(tb.tilejson(), {
+            tilejson: '2.0.0',
+            name: 'default',
+            version: '1.0.0',
+            scheme: 'xyz',
+            tiles: [],
+            minzoom: 8,
+            maxzoom: 10,
+            bounds: [ -109.3359375, 39.095962936305476, -107.2265625, 38.54816542304657 ],
+            center: [ -108.28125, 38.82206417967602 ]
+        });
+
         await tb.close();
     } catch (err) {
         t.error(err, 'no errors');

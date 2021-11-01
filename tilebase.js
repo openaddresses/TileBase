@@ -5,7 +5,11 @@ const { promisify } = require('util');
 const MBTiles = require('@mapbox/mbtiles');
 const tc = require('@mapbox/tile-cover');
 const { point } = require('@turf/helpers');
+const bboxPolygon = require('@turf/bbox-polygon').default;
+const centroid = require('@turf/centroid').default;
+
 const zlib = require('zlib');
+const TB = require('@mapbox/tilebelt');
 
 const Config = require('./lib/config');
 const interfaces = require('./lib/interfaces');
@@ -76,6 +80,40 @@ class TileBase {
 
         await this.handler.close();
         this.isopen = false;
+    }
+
+    /**
+     * Return a partial TileJSON Object for the TileBase File
+     * Note: TileBase file will not populate the URL fields
+     */
+    tilejson() {
+        if (!this.isopen) throw new Error('TileBase file is not open');
+
+        const ul = TB.tileToBBOX([
+            this.config.config.ranges[this.config.config.max][0],
+            this.config.config.ranges[this.config.config.max][1],
+            this.config.config.max
+        ]);
+
+        const lr = TB.tileToBBOX([
+            this.config.config.ranges[this.config.config.max][2],
+            this.config.config.ranges[this.config.config.max][3],
+            this.config.config.max
+        ]);
+
+        const bounds = [ul[0], ul[1], lr[2], lr[3]];
+
+        return {
+            tilejson: '2.0.0',
+            name: 'default',
+            version: '1.0.0',
+            scheme: 'xyz',
+            tiles: [],
+            minzoom: this.config.config.min,
+            maxzoom: this.config.config.max,
+            bounds: bounds,
+            center: centroid(bboxPolygon(bounds)).geometry.coordinates
+        };
     }
 
     /**
