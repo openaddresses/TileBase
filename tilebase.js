@@ -85,6 +85,8 @@ class TileBase {
     /**
      * Return a partial TileJSON Object for the TileBase File
      * Note: TileBase file will not populate the URL fields
+     *
+     * @returns {Object} TileJSON Object
      */
     tilejson() {
         if (!this.isopen) throw new Error('TileBase file is not open');
