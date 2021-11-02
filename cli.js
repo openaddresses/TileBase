@@ -50,12 +50,16 @@ async function convert() {
     }
 
     try {
-        await TileBase.to_tb(
+        const tb = await TileBase.to_tb(
             path.resolve(__dirname, argv._[3]),
             path.resolve(__dirname, argv._[4])
         );
 
-        console.error('ok - converted TileBase');
+        await tb.open();
+        console.log('Success');
+        console.log(`${(tb.start_tile - tb.start_index) / 16} tiles`);
+        console.log(`${tb.start_tile} byte index`);
+        await tb.close();
     } catch (err) {
         console.error(err);
         process.exit(1);

@@ -32,3 +32,6 @@ jobs:
 
             - name: Lint
               run: npm run lint
+
+            - name: Doc Lint
+              run: npm run lint-doc

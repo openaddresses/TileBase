@@ -5,7 +5,11 @@ const { promisify } = require('util');
 const MBTiles = require('@mapbox/mbtiles');
 const tc = require('@mapbox/tile-cover');
 const { point } = require('@turf/helpers');
+const bboxPolygon = require('@turf/bbox-polygon').default;
+const centroid = require('@turf/centroid').default;
+
 const zlib = require('zlib');
+const TB = require('@mapbox/tilebelt');
 
 const Config = require('./lib/config');
 const interfaces = require('./lib/interfaces');
@@ -85,6 +89,42 @@ class TileBase {
     }
 
     /**
+     * Return a partial TileJSON Object for the TileBase File
+     * Note: TileBase file will not populate the URL fields
+     *
+     * @returns {Object} TileJSON Object
+     */
+    tilejson() {
+        if (!this.isopen) throw new Error('TileBase file is not open');
+
+        const ul = TB.tileToBBOX([
+            this.config.config.ranges[this.config.config.max][0],
+            this.config.config.ranges[this.config.config.max][1],
+            this.config.config.max
+        ]);
+
+        const lr = TB.tileToBBOX([
+            this.config.config.ranges[this.config.config.max][2],
+            this.config.config.ranges[this.config.config.max][3],
+            this.config.config.max
+        ]);
+
+        const bounds = [ul[0], ul[1], lr[2], lr[3]];
+
+        return {
+            tilejson: '2.0.0',
+            name: 'default',
+            version: '1.0.0',
+            scheme: 'xyz',
+            tiles: [],
+            minzoom: this.config.config.min,
+            maxzoom: this.config.config.max,
+            bounds: bounds,
+            center: centroid(bboxPolygon(bounds)).geometry.coordinates
+        };
+    }
+
+    /**
      * Return a single tile from a TileBase file
      *
      * @param {number} z Z Coordinate
@@ -96,19 +136,31 @@ class TileBase {
      */
     async tile(z, x, y, unzip = false) {
         if (!this.isopen) throw new Error('TileBase file is not open');
+        z = parseInt(z);
+        x = parseInt(x);
+        y = parseInt(y);
 
-        if (!this.config.config.ranges[z]) throw new Error('Zoom not supported');
-        if (x < this.config.config.ranges[z][0] || x > this.config.config.ranges[z][2]) throw new Error('X out of range');
-        if (y < this.config.config.ranges[z][1] || x > this.config.config.ranges[z][3]) throw new Error('Y out of range');
-
-        let tiles = 0;
-        for (let c = this.config.config.min; c < z; c++) {
-            tiles += (this.config.config.ranges[c][2] - this.config.config.ranges[c][0]) * (this.config.config.ranges[c][3] - this.config.config.ranges[c][1]) + 1;
+        for (const ele of [x, y, z]) {
+            if (isNaN(ele)) throw new Error('ZXY coordinates must be integers');
         }
 
-        const x_diff = this.config.config.ranges[z][2] - this.config.config.ranges[z][0];
-        tiles += x_diff * (y - this.config.config.ranges[z][1]);
-        tiles += x - this.config.config.ranges[z][0];
+        if (!this.config.config.ranges[z]) throw new Error('Zoom not supported');
+        if (x < this.config.config.ranges[z][0]) throw new Error('X below range');
+        if (x > this.config.config.ranges[z][2]) throw new Error('X above range');
+        if (y < this.config.config.ranges[z][1]) throw new Error('Y below range');
+        if (y > this.config.config.ranges[z][3]) throw new Error('Y above range');
+
+        let tiles = 0;
+        // Calculate tile counts below requested zoom
+        for (let c = this.config.config.min; c < z; c++) {
+            tiles += (this.config.config.ranges[c][2] - this.config.config.ranges[c][0] + 1) * (this.config.config.ranges[c][3] - this.config.config.ranges[c][1] + 1);
+        }
+
+        // Calculate tile counts at requested zoom
+        const x_diff = this.config.config.ranges[z][2] - this.config.config.ranges[z][0] + 1;
+        const pre = x_diff * (y - this.config.config.ranges[z][1]);
+
+        tiles += pre + x - this.config.config.ranges[z][0];
 
         const idxbuff = await this.handler.read(this.start_index + (tiles * 16), 16);
 
@@ -158,11 +210,12 @@ class TileBase {
 
                     // Create Config File & Write to DB
                     for (let z = config.min; z <= config.max; z++) {
-                        const min = tc.tiles(point([info.bounds[0], info.bounds[1]]).geometry, { min_zoom: z, max_zoom: z })[0];
-                        const max = tc.tiles(point([info.bounds[2], info.bounds[3]]).geometry, { min_zoom: z, max_zoom: z })[0];
+                        const p1 = tc.tiles(point([info.bounds[0], info.bounds[1]]).geometry, { min_zoom: z, max_zoom: z })[0];
+                        const p2 = tc.tiles(point([info.bounds[2], info.bounds[3]]).geometry, { min_zoom: z, max_zoom: z })[0];
 
-                        config.ranges[z] = [min[0], min[1], max[0], max[1]];
+                        config.ranges[z] = [p1[0], p2[1], p2[0], p1[1]];
                     }
+
                     Config.write(output, config);
 
                     const tb = fs.createWriteStream(output, { flags:'a' });
@@ -172,8 +225,8 @@ class TileBase {
 
                     // Request each of the tiles within a range for a specific zoom
                     for (let z = config.min; z <= config.max; z++) {
-                        for (let x = config.ranges[z][0]; x <= config.ranges[z][2]; x++) {
-                            for (let y = config.ranges[z][1]; y <= config.ranges[z][3]; y++) {
+                        for (let y = config.ranges[z][1]; y <= config.ranges[z][3]; y++) {
+                            for (let x = config.ranges[z][0]; x <= config.ranges[z][2]; x++) {
                                 const tile = await getTile(mbtiles, z, x, y);
                                 const tile_ln = BigInt(tile.length);
 

@@ -10,6 +10,31 @@
 
 ## Version History
 
+### v1.5.0
+
+- :tada: Add `.tilejson()` function for generating a minimal TileJSON Object
+- :arrow_up: General Dep Update
+
+### v1.4.0
+
+- :bug: Fix a major bug in tile generation
+- :arrow_up: Update all deps
+- :white_check_mark: Add 1:1 (byte:byte) tests between GetTile in TileBase vs MBTiles
+
+### v1.3.2
+
+- :bug: Fix a bug in index_count where bounds weren't treated as inclusive
+- :white_check_mark: Add tests to confirm index counts
+
+### v1.3.1
+
+- :rocket: Remove console log
+
+### v1.3.0
+
+- :bug: Fix a bug in bbox creation during conversion
+- :rocket: Add stats printout at end of cli conversion
+
 ### v1.2.0
 
 - :tada: Add support for `http://`, `https://`, & `s3://`

@@ -7,7 +7,7 @@ TileBase can be accessed in several ways through the following client libraries
 
 | Language | Link |
 | -------- | ---- |
-| NodeJS   | [USAGE](https://openaddresses.github.io/tilebase/)
+| NodeJS   | [USAGE](https://openaddresses.github.io/TileBase/)
 
 ## Command Line Library
 
@@ -103,7 +103,7 @@ first byte after the Tile Addresses block.
 
 _Example: Single Tile Address_
 ```
-<LE-UInt64 Byte Address><LE-UInt64 Vector Tile Size>
+<LE-UInt64 Address><LE-UInt64 Vector Tile Size>
 ```
 
 ### Tile Data
