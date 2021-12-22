@@ -7,6 +7,7 @@ const tc = require('@mapbox/tile-cover');
 const { point } = require('@turf/helpers');
 const bboxPolygon = require('@turf/bbox-polygon').default;
 const centroid = require('@turf/centroid').default;
+const TBError = require('./lib/error');
 
 const zlib = require('zlib');
 const TB = require('@mapbox/tilebelt');
@@ -44,7 +45,7 @@ class TileBase {
         this.config_length = 0; // The length of the config object in bytes
 
         const p = new URL(url);
-        if (!interfaces[p.protocol]) throw new Error(`${p.protocol} not supported`);
+        if (!interfaces[p.protocol]) throw new TBError(400, `${p.protocol} not supported`);
 
         this.handler = new interfaces[p.protocol](url);
         this.config = new Config(this);
@@ -58,7 +59,7 @@ class TileBase {
      * Open a TileBase file for reading
      */
     async open() {
-        if (this.isopen) throw new Error('TileBase file is already open');
+        if (this.isopen) throw new TBError(400, 'TileBase file is already open');
 
         await this.handler.open();
 
@@ -76,7 +77,7 @@ class TileBase {
      * Close a TileBase file from reading
      */
     async close() {
-        if (!this.isopen) throw new Error('TileBase file is already closed');
+        if (!this.isopen) throw new TBError(400, 'TileBase file is already closed');
 
         await this.handler.close();
         this.isopen = false;
@@ -89,7 +90,7 @@ class TileBase {
      * @returns {Object} TileJSON Object
      */
     tilejson() {
-        if (!this.isopen) throw new Error('TileBase file is not open');
+        if (!this.isopen) throw new TBError(400, 'TileBase file is not open');
 
         const ul = TB.tileToBBOX([
             this.config.config.ranges[this.config.config.max][0],
@@ -129,20 +130,20 @@ class TileBase {
      * @returns Buffer Tile
      */
     async tile(z, x, y, unzip = false) {
-        if (!this.isopen) throw new Error('TileBase file is not open');
+        if (!this.isopen) throw new TBError(400, 'TileBase file is not open');
         z = parseInt(z);
         x = parseInt(x);
         y = parseInt(y);
 
         for (const ele of [x, y, z]) {
-            if (isNaN(ele)) throw new Error('ZXY coordinates must be integers');
+            if (isNaN(ele)) throw new TBError(400, 'ZXY coordinates must be integers');
         }
 
-        if (!this.config.config.ranges[z]) throw new Error('Zoom not supported');
-        if (x < this.config.config.ranges[z][0]) throw new Error('X below range');
-        if (x > this.config.config.ranges[z][2]) throw new Error('X above range');
-        if (y < this.config.config.ranges[z][1]) throw new Error('Y below range');
-        if (y > this.config.config.ranges[z][3]) throw new Error('Y above range');
+        if (!this.config.config.ranges[z]) throw new TBError(404, 'Zoom not supported');
+        if (x < this.config.config.ranges[z][0]) throw new TBError(404, 'X below range');
+        if (x > this.config.config.ranges[z][2]) throw new TBError(404, 'X above range');
+        if (y < this.config.config.ranges[z][1]) throw new TBError(404, 'Y below range');
+        if (y > this.config.config.ranges[z][3]) throw new TBError(404, 'Y above range');
 
         let tiles = 0;
         // Calculate tile counts below requested zoom
@@ -195,9 +196,9 @@ class TileBase {
                 try {
                     const info = await getInfo(mbtiles);
 
-                    if (isNaN(Number(info.minzoom))) return reject(new Error('Missing metadata.minzoom'));
-                    if (isNaN(Number(info.maxzoom))) return reject(new Error('Missing metadata.maxzoom'));
-                    if (!info.bounds) return reject(new Error('Missing metadata.bounds'));
+                    if (isNaN(Number(info.minzoom))) return reject(new TBError(400, 'Missing metadata.minzoom'));
+                    if (isNaN(Number(info.maxzoom))) return reject(new TBError(400, 'Missing metadata.maxzoom'));
+                    if (!info.bounds) return reject(new TBError(400, 'Missing metadata.bounds'));
 
                     config.min = info.minzoom;
                     config.max = info.maxzoom;
@@ -244,7 +245,8 @@ class TileBase {
                         return resolve(new TileBase('file://' + output));
                     });
                 } catch (err) {
-                    return reject(err);
+                    if (err instanceof TBError) return reject(err);
+                    return reject(new TBError(500, err.message));
                 }
             });
         });

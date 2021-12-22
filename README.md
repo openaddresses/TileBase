@@ -112,3 +112,9 @@ Tile Data is simply a blob of continuous gzipped Mapbox Vector Tiles. Their orde
 is determined simply by the order in which they are reference by the Tile
 Address blob.
 
+### Error Handling
+
+Errors returned via the TileBase library will return a TBError, an extension to the default
+JS `Error` class with the addition of a `status` field. The status field will contain a suggested
+HTTP Status code to return to a user in a server setting.
+
