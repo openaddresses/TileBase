@@ -1,7 +1,7 @@
 'use strict';
 
-const test = require('tape');
-const Config = require('../lib/config');
+import test from 'tape';
+import Config from '../lib/config.js';
 
 test('config#index_count - simply', (t) => {
     const cnf = new Config({});

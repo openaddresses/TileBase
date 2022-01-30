@@ -1,19 +1,19 @@
 'use strict';
 
-const fs = require('fs');
-const { promisify } = require('util');
-const MBTiles = require('@mapbox/mbtiles');
-const tc = require('@mapbox/tile-cover');
-const { point } = require('@turf/helpers');
-const bboxPolygon = require('@turf/bbox-polygon').default;
-const centroid = require('@turf/centroid').default;
-const TBError = require('./lib/error');
+import fs from 'fs';
+import { promisify } from 'util';
+import MBTiles from '@mapbox/mbtiles';
+import tc from '@mapbox/tile-cover';
+import { point } from '@turf/helpers';
+import bboxPolygon from '@turf/bbox-polygon';
+import centroid from '@turf/centroid';
+import TBError from './lib/error.js';
 
-const zlib = require('zlib');
-const TB = require('@mapbox/tilebelt');
+import zlib from 'zlib';
+import TB from '@mapbox/tilebelt';
 
-const Config = require('./lib/config');
-const interfaces = require('./lib/interfaces');
+import Config from './lib/config.js';
+import interfaces from './lib/interfaces.js';
 const gunzip = promisify(zlib.gunzip);
 
 /**
@@ -272,4 +272,4 @@ class TileBase {
     }
 }
 
-module.exports = TileBase;
+export default TileBase;

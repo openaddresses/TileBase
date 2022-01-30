@@ -1,8 +1,8 @@
 'use strict';
 
-const path = require('path');
-const test = require('tape');
-const TileBase = require('../');
+import path = from 'path';
+import test from 'tape';
+import TileBase from '../tilebase.js';
 
 test('Min', async (t) => {
     try {

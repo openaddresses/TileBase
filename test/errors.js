@@ -1,9 +1,9 @@
 'use strict';
 
-const path = require('path');
-const test = require('tape');
-const TileBase = require('../');
-const TBError = require('../lib/error');
+import path from 'path';
+import test from 'tape';
+import TileBase from '../tilebase.js';
+import TBError from '../lib/error.js';
 
 test('Errors', async (t) => {
     try {

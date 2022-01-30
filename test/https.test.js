@@ -1,9 +1,9 @@
 'use strict';
 
-const test = require('tape');
-const TileBase = require('../tilebase.js');
-const { VectorTile } = require('@mapbox/vector-tile');
-const Protobuf = require('pbf');
+import test from 'tape';
+import TileBase from '../tilebase.js';
+import { VectorTile } from '@mapbox/vector-tile';
+import Protobuf from 'pbf';
 
 test('TileBase(https://)', async (t) => {
     try {
