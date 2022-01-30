@@ -10,6 +10,10 @@
 
 ## Version History
 
+### v1.6.0
+
+- :tada: Add suggested status codes to thrown Errors
+
 ### v1.5.0
 
 - :tada: Add `.tilejson()` function for generating a minimal TileJSON Object
