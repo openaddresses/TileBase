@@ -10,6 +10,10 @@
 
 ## Version History
 
+### v1.6.1
+
+- :arrow_up: General Dep Maintenance - Update ESLint rules to ECMA v13
+
 ### v1.6.0
 
 - :tada: Add suggested status codes to thrown Errors
