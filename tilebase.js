@@ -82,6 +82,15 @@ class TileBase {
     }
 
     /**
+     * Return the format of tiles in the TileBase file
+     *
+     * @return {string}
+     */
+    format() {
+        return this.config.config.format;
+    }
+
+    /**
      * Return a partial TileJSON Object for the TileBase File
      * Note: TileBase file will not populate the URL fields
      *
@@ -106,8 +115,10 @@ class TileBase {
 
         return {
             tilejson: '2.0.0',
-            name: 'default',
-            version: '1.0.0',
+            name: this.config.config.name,
+            description: this.config.config.description || 'unspecified',
+            attribution: this.config.config.attribution || 'unspecified',
+            version: this.config.config.version || '1.0.0',
             scheme: 'xyz',
             tiles: [],
             minzoom: this.config.config.min,
@@ -200,6 +211,17 @@ class TileBase {
 
                     config.min = info.minzoom;
                     config.max = info.maxzoom;
+
+                    // These are required by the mbtiles spec
+                    config.name = info.name || 'Unnamed Dataset';
+                    config.format = info.format || 'pbf';
+
+                    // In the future we could look at ensuring these don't exceed max config size
+                    // and auto truncating if they do - max size ~4gb
+                    if (info.attribution) config.attribution = info.attribution;
+                    if (info.description) config.attribution = info.description;
+                    if (info.type) config.attribution = info.type;
+                    if (info.version) config.attribution = info.version;
 
                     // Create Config File & Write to DB
                     for (let z = config.min; z <= config.max; z++) {

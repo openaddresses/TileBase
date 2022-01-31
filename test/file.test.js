@@ -20,7 +20,7 @@ test('TileBase(file://)', async (t) => {
         await tb.open();
 
         t.ok(tb instanceof TileBase, 'TileBase');
-        t.equals(tb.config_length, 318, 'config_length: 318');
+        t.equals(tb.config_length, 375, 'config_length: 375');
         t.equals(tb.version, 1, 'version: 1');
         t.deepEquals(tb.config.config, {
             min: 0,
@@ -41,7 +41,10 @@ test('TileBase(file://)', async (t) => {
                 12: [1144, 1567, 1144, 1567],
                 13: [2289, 3135, 2289, 3135],
                 14: [4579, 6271, 4579, 6271]
-            }
+            },
+            name: 'single.mbtiles',
+            format: 'pbf',
+            attribution: '2'
         }, 'config: { obj }');
 
         let tile = false;

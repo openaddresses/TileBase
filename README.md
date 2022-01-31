@@ -71,6 +71,8 @@ D3
 00      1234 bytes
 ```
 
+This means that the max number of bytes in the JSON config is 4294967295 bytes (~4gb)
+
 ### File Config
 
 After the header, a stringified JSON object contains the config necessary to read the
