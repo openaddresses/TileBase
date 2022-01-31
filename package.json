@@ -1,7 +1,7 @@
 {
     "name": "tilebase",
     "type": "module",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "description": "Range based Single File MBTiles like Store",
     "main": "tilebase.js",
     "bin": "cli.js",
