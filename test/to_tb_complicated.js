@@ -10,11 +10,14 @@ test('TileBase#To_TB (complicated)', async (t) => {
         await tb.open();
 
         t.ok(tb instanceof TileBase, 'TileBase');
-        t.equals(tb.config_length, 92, 'config_length: 92');
+        t.equals(tb.config_length, 147, 'config_length: 147');
         t.equals(tb.version, 1, 'version: 1');
         t.deepEquals(tb.config.config, {
             min: 8,
             max: 10,
+            name: 'mesa.mbtiles',
+            format: 'pbf',
+            attribution: '2',
             ranges: {
                 8: [50, 97, 51, 98],
                 9: [100, 195, 103, 196],
@@ -47,7 +50,9 @@ test('TileBase#To_TB (complicated)', async (t) => {
 
         t.deepEquals(tb.tilejson(), {
             tilejson: '2.0.0',
-            name: 'default',
+            name: 'mesa.mbtiles',
+            description: 'unspecified',
+            attribution: '2',
             version: '1.0.0',
             scheme: 'xyz',
             tiles: [],
