@@ -5,6 +5,9 @@
     "description": "Range based Single File MBTiles like Store",
     "main": "tilebase.js",
     "bin": "cli.js",
+    "engines": {
+        "node": ">= 16.0.0"
+    },
     "scripts": {
         "doc": "documentation build tilebase.js -f html -o docs && documentation lint tilebase.js",
         "lint": "eslint tilebase.js cli.js lib/**.js test/**.js",
