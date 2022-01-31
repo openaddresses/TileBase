@@ -10,6 +10,10 @@
 
 ## Version History
 
+### v2.0.0
+
+- :rocket: Switch to be an ES Module
+
 ### v1.6.1
 
 - :arrow_up: General Dep Maintenance - Update ESLint rules to ECMA v13
