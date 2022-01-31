@@ -1,5 +1,3 @@
-'use strict';
-
 import test from 'tape';
 import TileBase from '../tilebase.js';
 import { VectorTile } from '@mapbox/vector-tile';

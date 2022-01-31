@@ -1,14 +1,11 @@
-'use strict';
-
 import test from 'tape';
-import path from 'path';
 import TileBase from '../tilebase.js';
 import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 
 test('TileBase#To_TB', async (t) => {
     try {
-        const tb = await TileBase.to_tb(path.resolve(__dirname, './fixtures/single.mbtiles'), '/tmp/test.tb');
+        const tb = await TileBase.to_tb(new URL('./fixtures/single.mbtiles', import.meta.url).pathname, '/tmp/test.tb');
 
         await tb.open();
 

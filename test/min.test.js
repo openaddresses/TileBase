@@ -1,12 +1,9 @@
-'use strict';
-
-import path = from 'path';
 import test from 'tape';
 import TileBase from '../tilebase.js';
 
 test('Min', async (t) => {
     try {
-        const tb = new TileBase('file://' + path.resolve(__dirname, './fixtures', 'min.tb'));
+        const tb = new TileBase('file://' + new URL('./fixtures/min.tb', import.meta.url).pathname);
         await tb.open();
 
         t.deepEquals(tb.config.config, {

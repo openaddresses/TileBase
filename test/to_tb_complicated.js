@@ -1,7 +1,4 @@
-'use strict';
-
 import test from 'tape';
-import path from 'path';
 import TileBase from '../tilebase.js';
 import { VectorTile } from '@mapbox/vector-tile';
 import MBTiles from '@mapbox/mbtiles';
@@ -9,7 +6,7 @@ import Protobuf from 'pbf';
 
 test('TileBase#To_TB (complicated)', async (t) => {
     try {
-        const tb = await TileBase.to_tb(path.resolve(__dirname, './fixtures/mesa.mbtiles'), '/tmp/mesa.tb');
+        const tb = await TileBase.to_tb(new URL('./fixtures/mesa.mbtiles', import.meta.url).pathname, '/tmp/mesa.tb');
         await tb.open();
 
         t.ok(tb instanceof TileBase, 'TileBase');
@@ -25,7 +22,7 @@ test('TileBase#To_TB (complicated)', async (t) => {
             }
         }, 'config: { obj }');
 
-        const mbt = await mbtiles(path.resolve(__dirname, './fixtures/mesa.mbtiles'));
+        const mbt = await mbtiles(new URL('./fixtures/mesa.mbtiles', import.meta.url).pathname);
 
         // Iterate through each tile and validate that it is a VT
         let tiles = 0;
