@@ -1,17 +1,17 @@
 #! /usr/bin/env node
 
-'use strict';
+import { URL } from 'url';
+import fs from 'fs';
+import TileBase from './tilebase.js';
+import minimist from 'minimist';
 
-const pkg = require('./package.json');
-const path = require('path');
-const TileBase = require('.');
-const argv = require('minimist')(process.argv, {
+const argv = minimist(process.argv, {
     boolean: ['help', 'version']
 });
 
-if (argv.version) return version();
-if (argv.help || !argv._[2]) return help();
-if (argv._[2] === 'convert') return convert();
+if (argv.version) version();
+else if (argv.help || !argv._[2]) help();
+else if (argv._[2] === 'convert') convert();
 
 function help() {
     if (!argv._[2]) {
@@ -40,6 +40,7 @@ function help() {
 }
 
 function version() {
+    const pkg = JSON.parse(fs.readFileSync(new URL('package.json', import.meta.url).pathname));
     console.log(`TileBase@${pkg.version}`);
 }
 
@@ -51,8 +52,8 @@ async function convert() {
 
     try {
         const tb = await TileBase.to_tb(
-            path.resolve(__dirname, argv._[3]),
-            path.resolve(__dirname, argv._[4])
+            new URL(argv._[3], import.meta.url).pathname,
+            new URL(argv._[4], import.meta.url).pathname
         );
 
         await tb.open();

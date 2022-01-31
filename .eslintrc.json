@@ -11,6 +11,7 @@
         "BigInt": true
     },
     "parserOptions": {
+        "sourceType": "module",
         "ecmaVersion": 13
     },
     "plugins": [ "node" ],
@@ -41,8 +42,6 @@
         "keyword-spacing": [ "error", { "before": true, "after": true } ],
         "template-curly-spacing": [ "error", "never" ],
         "semi-spacing": "error",
-        "strict": "error",
-        "node/no-unsupported-features": [ "error", { "version": 8 } ],
         "node/no-missing-require": "error",
         "valid-jsdoc": ["error", {
             "requireParamDescription": false,

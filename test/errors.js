@@ -1,13 +1,10 @@
-'use strict';
-
-const path = require('path');
-const test = require('tape');
-const TileBase = require('../');
-const TBError = require('../lib/error');
+import test from 'tape';
+import TileBase from '../tilebase.js';
+import TBError from '../lib/error.js';
 
 test('Errors', async (t) => {
     try {
-        const tb = new TileBase('file://' + path.resolve(__dirname, './fixtures', 'min.tb'));
+        const tb = new TileBase('file://' + new URL('./fixtures/min.tb', import.meta.url).pathname);
 
         try {
             await tb.tile(1, 1, 1);
