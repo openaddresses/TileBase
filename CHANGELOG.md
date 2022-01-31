@@ -10,6 +10,10 @@
 
 ## Version History
 
+### v3.0.0
+
+- :rocket: Enforce `format` & `name` config properties
+
 ### v2.0.0
 
 - :rocket: Switch to be an ES Module
