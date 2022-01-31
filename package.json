@@ -10,7 +10,7 @@
     },
     "scripts": {
         "doc": "documentation build tilebase.js -f html -o docs && documentation lint tilebase.js",
-        "lint": "eslint tilebase.js cli.js lib/**.js test/**.js",
+        "lint": "eslint tilebase.js cli.js lib/**/*.js test/**/*.js",
         "lint-doc": "documentation lint tilebase.js",
         "test": "tape test/**.test.js"
     },
