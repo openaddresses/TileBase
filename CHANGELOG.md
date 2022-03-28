@@ -10,6 +10,26 @@
 
 ## Version History
 
+### v3.0.1
+
+- :arrow_up: Update base deps
+
+### v3.0.0
+
+- :rocket: Enforce `format` & `name` config properties
+
+### v2.0.0
+
+- :rocket: Switch to be an ES Module
+
+### v1.6.1
+
+- :arrow_up: General Dep Maintenance - Update ESLint rules to ECMA v13
+
+### v1.6.0
+
+- :tada: Add suggested status codes to thrown Errors
+
 ### v1.5.0
 
 - :tada: Add `.tilejson()` function for generating a minimal TileJSON Object

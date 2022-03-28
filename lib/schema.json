@@ -3,17 +3,29 @@
     "required": [
         "min",
         "max",
-        "ranges"
+        "ranges",
+        "format",
+        "name"
     ],
     "properties": {
         "min": {
-            "type": "integer"
+            "type": "integer",
+            "description": "the min zoom level of the file"
         },
         "max": {
-            "type": "integer"
+            "type": "integer",
+            "description": "the max zoom level of the file"
         },
         "ranges": {
             "type": "object"
+        },
+        "name": {
+            "type": "string",
+            "description": "A human readable name of the dataset"
+        },
+        "format": {
+            "type": "string",
+            "description": "The format of the tile data - pbf/png/jpeg etc."
         }
     }
 }

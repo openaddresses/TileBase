@@ -1,23 +1,23 @@
-'use strict';
-
-const test = require('tape');
-const path = require('path');
-const TileBase = require('../tilebase.js');
-const { VectorTile } = require('@mapbox/vector-tile');
-const MBTiles = require('@mapbox/mbtiles');
-const Protobuf = require('pbf');
+import test from 'tape';
+import TileBase from '../tilebase.js';
+import { VectorTile } from '@mapbox/vector-tile';
+import MBTiles from '@mapbox/mbtiles';
+import Protobuf from 'pbf';
 
 test('TileBase#To_TB (complicated)', async (t) => {
     try {
-        const tb = await TileBase.to_tb(path.resolve(__dirname, './fixtures/mesa.mbtiles'), '/tmp/mesa.tb');
+        const tb = await TileBase.to_tb(new URL('./fixtures/mesa.mbtiles', import.meta.url).pathname, '/tmp/mesa.tb');
         await tb.open();
 
         t.ok(tb instanceof TileBase, 'TileBase');
-        t.equals(tb.config_length, 92, 'config_length: 92');
+        t.equals(tb.config_length, 147, 'config_length: 147');
         t.equals(tb.version, 1, 'version: 1');
         t.deepEquals(tb.config.config, {
             min: 8,
             max: 10,
+            name: 'mesa.mbtiles',
+            format: 'pbf',
+            attribution: '2',
             ranges: {
                 8: [50, 97, 51, 98],
                 9: [100, 195, 103, 196],
@@ -25,7 +25,7 @@ test('TileBase#To_TB (complicated)', async (t) => {
             }
         }, 'config: { obj }');
 
-        const mbt = await mbtiles(path.resolve(__dirname, './fixtures/mesa.mbtiles'));
+        const mbt = await mbtiles(new URL('./fixtures/mesa.mbtiles', import.meta.url).pathname);
 
         // Iterate through each tile and validate that it is a VT
         let tiles = 0;
@@ -50,7 +50,9 @@ test('TileBase#To_TB (complicated)', async (t) => {
 
         t.deepEquals(tb.tilejson(), {
             tilejson: '2.0.0',
-            name: 'default',
+            name: 'mesa.mbtiles',
+            description: 'unspecified',
+            attribution: '2',
             version: '1.0.0',
             scheme: 'xyz',
             tiles: [],

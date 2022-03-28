@@ -71,6 +71,8 @@ D3
 00      1234 bytes
 ```
 
+This means that the max number of bytes in the JSON config is 4294967295 bytes (~4gb)
+
 ### File Config
 
 After the header, a stringified JSON object contains the config necessary to read the
@@ -111,4 +113,10 @@ _Example: Single Tile Address_
 Tile Data is simply a blob of continuous gzipped Mapbox Vector Tiles. Their order
 is determined simply by the order in which they are reference by the Tile
 Address blob.
+
+### Error Handling
+
+Errors returned via the TileBase library will return a TBError, an extension to the default
+JS `Error` class with the addition of a `status` field. The status field will contain a suggested
+HTTP Status code to return to a user in a server setting.
 

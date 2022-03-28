@@ -1,23 +1,23 @@
-'use strict';
-
-const test = require('tape');
-const path = require('path');
-const TileBase = require('../tilebase.js');
-const { VectorTile } = require('@mapbox/vector-tile');
-const Protobuf = require('pbf');
+import test from 'tape';
+import TileBase from '../tilebase.js';
+import { VectorTile } from '@mapbox/vector-tile';
+import Protobuf from 'pbf';
 
 test('TileBase#To_TB', async (t) => {
     try {
-        const tb = await TileBase.to_tb(path.resolve(__dirname, './fixtures/single.mbtiles'), '/tmp/test.tb');
+        const tb = await TileBase.to_tb(new URL('./fixtures/single.mbtiles', import.meta.url).pathname, '/tmp/test.tb');
 
         await tb.open();
 
         t.ok(tb instanceof TileBase, 'TileBase');
-        t.equals(tb.config_length, 318, 'config_length: 318');
+        t.equals(tb.config_length, 375, 'config_length: 375');
         t.equals(tb.version, 1, 'version: 1');
         t.deepEquals(tb.config.config, {
             min: 0,
             max: 14,
+            format: 'pbf',
+            name: 'single.mbtiles',
+            attribution: '2',
             ranges: {
                 0: [0, 0, 0, 0],
                 1: [0, 0, 0, 0],
@@ -53,6 +53,8 @@ test('TileBase#To_TB', async (t) => {
         tile = await tb.tile(14, 4579, 6271, true);
         tile = new VectorTile(new Protobuf(tile));
         t.equals(tile.layers.feat.length, 1, 'z14 feat');
+
+        t.equals(tb.format(), 'pbf');
 
         await tb.close();
     } catch (err) {

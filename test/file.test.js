@@ -1,14 +1,11 @@
-'use strict';
-
-const test = require('tape');
-const path = require('path');
-const TileBase = require('../tilebase.js');
-const { VectorTile } = require('@mapbox/vector-tile');
-const Protobuf = require('pbf');
+import test from 'tape';
+import TileBase from '../tilebase.js';
+import { VectorTile } from '@mapbox/vector-tile';
+import Protobuf from 'pbf';
 
 test('TileBase(file://) prep', async (t) => {
     try {
-        await TileBase.to_tb(path.resolve(__dirname, './fixtures/single.mbtiles'), '/tmp/test.tb');
+        await TileBase.to_tb(new URL('./fixtures/single.mbtiles', import.meta.url).pathname, '/tmp/test.tb');
     } catch (err) {
         t.error(err, 'no errors');
     }
@@ -23,7 +20,7 @@ test('TileBase(file://)', async (t) => {
         await tb.open();
 
         t.ok(tb instanceof TileBase, 'TileBase');
-        t.equals(tb.config_length, 318, 'config_length: 318');
+        t.equals(tb.config_length, 375, 'config_length: 375');
         t.equals(tb.version, 1, 'version: 1');
         t.deepEquals(tb.config.config, {
             min: 0,
@@ -44,7 +41,10 @@ test('TileBase(file://)', async (t) => {
                 12: [1144, 1567, 1144, 1567],
                 13: [2289, 3135, 2289, 3135],
                 14: [4579, 6271, 4579, 6271]
-            }
+            },
+            name: 'single.mbtiles',
+            format: 'pbf',
+            attribution: '2'
         }, 'config: { obj }');
 
         let tile = false;

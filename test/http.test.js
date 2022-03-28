@@ -1,18 +1,16 @@
-'use strict';
-
-const test = require('tape');
-const TileBase = require('../tilebase.js');
-const { VectorTile } = require('@mapbox/vector-tile');
-const Protobuf = require('pbf');
+import test from 'tape';
+import TileBase from '../tilebase.js';
+import { VectorTile } from '@mapbox/vector-tile';
+import Protobuf from 'pbf';
 
 test('TileBase(http://)', async (t) => {
     try {
-        const tb = new TileBase('http://v2.openaddresses.io/tilebase/test.tb');
+        const tb = new TileBase('http://v2.openaddresses.io/tilebase/test-3.tb');
 
         await tb.open();
 
         t.ok(tb instanceof TileBase, 'TileBase');
-        t.equals(tb.config_length, 318, 'config_length: 318');
+        t.equals(tb.config_length, 375, 'config_length: 375');
         t.equals(tb.version, 1, 'version: 1');
         t.deepEquals(tb.config.config, {
             min: 0,
@@ -33,7 +31,10 @@ test('TileBase(http://)', async (t) => {
                 12: [1144, 1567, 1144, 1567],
                 13: [2289, 3135, 2289, 3135],
                 14: [4579, 6271, 4579, 6271]
-            }
+            },
+            name: 'single.mbtiles',
+            format: 'pbf',
+            attribution: '2'
         }, 'config: { obj }');
 
         let tile = false;
