@@ -10,6 +10,10 @@
 
 ## Version History
 
+### v3.0.1
+
+- :arrow_up: Update base deps
+
 ### v3.0.0
 
 - :rocket: Enforce `format` & `name` config properties
