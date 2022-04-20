@@ -1,7 +1,6 @@
 import fs from 'fs';
 import { promisify } from 'util';
 import MBTiles from '@mapbox/mbtiles';
-import { point } from '@turf/helpers';
 import bboxPolygon from '@turf/bbox-polygon';
 import centroid from '@turf/centroid';
 import TBError from './lib/error.js';
@@ -231,7 +230,7 @@ class TileBase {
                         );
 
                         const lr = TB.pointToTile(
-                            info.bounds[2] > 180 ? 179 : info.bounds[2],
+                            info.bounds[2] > 179 ? 179 : info.bounds[2],
                             info.bounds[1] < -85 ? -85 : info.bounds[1],
                             z
                         );
