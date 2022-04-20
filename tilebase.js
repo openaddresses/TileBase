@@ -1,7 +1,6 @@
 import fs from 'fs';
 import { promisify } from 'util';
 import MBTiles from '@mapbox/mbtiles';
-import tc from '@mapbox/tile-cover';
 import { point } from '@turf/helpers';
 import bboxPolygon from '@turf/bbox-polygon';
 import centroid from '@turf/centroid';
@@ -225,10 +224,19 @@ class TileBase {
 
                     // Create Config File & Write to DB
                     for (let z = config.min; z <= config.max; z++) {
-                        const p1 = tc.tiles(point([info.bounds[0], info.bounds[1]]).geometry, { min_zoom: z, max_zoom: z })[0];
-                        const p2 = tc.tiles(point([info.bounds[2], info.bounds[3]]).geometry, { min_zoom: z, max_zoom: z })[0];
+                        const ul = TB.pointToTile(
+                            info.bounds[0] < -179 ? -179 : info.bounds[0],
+                            info.bounds[3] > 85 ? 85 : info.bounds[3],
+                            z
+                        );
 
-                        config.ranges[z] = [p1[0], p2[1], p2[0], p1[1]];
+                        const lr = TB.pointToTile(
+                            info.bounds[2] > 180 ? 179 : info.bounds[2],
+                            info.bounds[1] < -85 ? -85 : info.bounds[1],
+                            z
+                        );
+
+                        config.ranges[z] = [ul[0], ul[1], lr[0], lr[1]];
                     }
 
                     Config.write(output, config);
