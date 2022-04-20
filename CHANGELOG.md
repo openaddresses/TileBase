@@ -10,6 +10,10 @@
 
 ## Version History
 
+### v3.1.0
+
+- :bug: Fix bug where sources at or above mercator bounds would generate bad tile bounds
+
 ### v3.0.1
 
 - :arrow_up: Update base deps
