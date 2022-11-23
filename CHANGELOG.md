@@ -10,6 +10,11 @@
 
 ## Version History
 
+### v4.0.0
+
+- :rocket: Update to use default node fetch
+- :bug: Fix path bug in convert cli
+
 ### v3.1.3
 
 - :arrow_up: Update base deps
