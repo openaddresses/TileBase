@@ -2,6 +2,7 @@
 
 import { URL } from 'url';
 import fs from 'fs';
+import path from 'path';
 import TileBase from './tilebase.js';
 import minimist from 'minimist';
 
@@ -52,8 +53,8 @@ async function convert() {
 
     try {
         const tb = await TileBase.to_tb(
-            new URL(argv._[3], import.meta.url).pathname,
-            new URL(argv._[4], import.meta.url).pathname
+            path.resolve(process.cwd(), argv._[3]),
+            path.resolve(process.cwd(), argv._[4])
         );
 
         await tb.open();

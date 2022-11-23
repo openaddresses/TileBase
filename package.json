@@ -6,7 +6,7 @@
     "main": "tilebase.js",
     "bin": "cli.js",
     "engines": {
-        "node": ">= 16.0.0"
+        "node": ">= 18.0.0"
     },
     "scripts": {
         "doc": "documentation build tilebase.js -f html -o docs && documentation lint tilebase.js",
@@ -47,7 +47,6 @@
         "ajv": "^8.2.0",
         "aws-sdk": "^2.900.0",
         "minimist": "^1.2.5",
-        "node-fetch": "^3.2.0",
         "nyc": "^15.1.0",
         "pbf": "^3.2.1"
     }
