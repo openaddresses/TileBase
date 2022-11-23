@@ -24,6 +24,11 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: us-east-1
 
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 18
+                  registry-url: https://registry.npmjs.org/
+
             - name: Install
               run: npm install
 
